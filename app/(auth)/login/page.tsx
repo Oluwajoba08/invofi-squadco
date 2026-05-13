@@ -26,8 +26,8 @@ function ErrorBanner({ message }: { message: string }) {
 
 // ─── User type config ─────────────────────────────────────────────────────────
 const USER_TYPES: { value: UserType; label: string; icon: string; hint: string }[] = [
-  { value: 'individual',  label: 'Individual',  icon: '◎', hint: 'Personal account' },
-  { value: 'vendor',      label: 'Vendor',      icon: '◈', hint: 'Business / supplier' },
+  { value: 'individual', label: 'Individual', icon: '◎', hint: 'Personal account' },
+  { value: 'vendor', label: 'Vendor', icon: '◈', hint: 'Business / supplier' },
   { value: 'institution', label: 'Institution', icon: '⬡', hint: 'Organisation / employer' },
 ];
 
@@ -37,7 +37,7 @@ function ScoreRingDeco() {
     <div className="relative w-[220px] h-[220px] mx-auto">
       {/* Outer glow */}
       <div className="absolute inset-0 rounded-full bg-violet-600 blur-[60px] opacity-20" />
-      <svg viewBox="0 0 220 220" className="w-full h-full rotate-[-90deg]">
+      <svg viewBox="0 0 220 220" className="w-full h-full -rotate-90">
         {/* Track */}
         <circle cx="110" cy="110" r="90" fill="none" stroke="#1a1a2e" strokeWidth="12" />
         {/* Arc — static decorative fill */}
@@ -141,7 +141,7 @@ export default function LoginPage() {
                 { label: 'Member Since', value: 'Jan 2025' },
                 { label: 'Transfers', value: '23 Safe' },
               ].map((s) => (
-                <div key={s.label} className="rounded-xl border border-white/8 bg-white/[0.03] p-3.5">
+                <div key={s.label} className="rounded-xl border border-white/8 bg-white/3 p-3.5">
                   <p className="text-white/30 text-[10px] uppercase tracking-wider mb-1">{s.label}</p>
                   <p className="text-white font-semibold text-sm" style={{ fontFamily: 'Syne, sans-serif' }}>{s.value}</p>
                 </div>
@@ -188,11 +188,10 @@ export default function LoginPage() {
                     key={ut.value}
                     type="button"
                     onClick={() => setUserType(ut.value)}
-                    className={`rounded-xl border p-3.5 text-left transition-all duration-200 ${
-                      userType === ut.value
-                        ? 'border-violet-500/50 bg-violet-500/10'
-                        : 'border-white/8 bg-white/[0.03] hover:border-white/15'
-                    }`}
+                    className={`rounded-xl border p-3.5 text-left transition-all duration-200 ${userType === ut.value
+                      ? 'border-violet-500/50 bg-violet-500/10'
+                      : 'border-white/8 bg-white/3 hover:border-white/15'
+                      }`}
                   >
                     <span className={`text-lg block mb-1.5 ${userType === ut.value ? 'text-violet-400' : 'text-white/30'}`}>
                       {ut.icon}
@@ -297,7 +296,7 @@ export default function LoginPage() {
                 <button
                   key={p.label}
                   type="button"
-                  className="flex items-center justify-center gap-2 rounded-xl border border-white/8 bg-white/[0.03] py-3 text-sm text-white/50 hover:border-white/15 hover:text-white/70 transition-all duration-200"
+                  className="flex items-center justify-center gap-2 rounded-xl border border-white/8 bg-white/3 py-3 text-sm text-white/50 hover:border-white/15 hover:text-white/70 transition-all duration-200"
                 >
                   <span>{p.icon}</span>
                   <span>{p.label}</span>
