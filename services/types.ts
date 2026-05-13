@@ -94,13 +94,13 @@ export interface Vendor extends AuthRequest.CreateVendor {
 }
 
 export interface Individual {
-  _id: string;
+  _id?: string;
   fullName: string;
   email: string;
-  bvn: string;
-  nin: string;
-  phoneNumber: string;
-  vScore: number;
+  bvn?: string;
+  nin?: string;
+  phoneNumber?: string;
+  vScore?: number;
 }
 
 export interface Institution {
