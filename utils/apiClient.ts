@@ -38,6 +38,7 @@ export async function apiClient<T>(
   };
 
   try {
+    console.log('API request:', `${baseUrl}${endpoint}${queryString}`, config);
     const response = await fetch(`${baseUrl}${endpoint}${queryString}`, config);
 
     if (!response.ok) {

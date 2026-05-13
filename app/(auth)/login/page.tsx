@@ -34,10 +34,10 @@ const USER_TYPES: { value: UserType; label: string; icon: string; hint: string }
 // ─── Score ring (decorative) ──────────────────────────────────────────────────
 function ScoreRingDeco() {
   return (
-    <div className="relative w-[220px] h-[220px] mx-auto">
+    <div className="relative w-55 h-55 mx-auto">
       {/* Outer glow */}
       <div className="absolute inset-0 rounded-full bg-violet-600 blur-[60px] opacity-20" />
-      <svg viewBox="0 0 220 220" className="w-full h-full rotate-[-90deg]">
+      <svg viewBox="0 0 220 220" className="w-full h-full -rotate-90">
         {/* Track */}
         <circle cx="110" cy="110" r="90" fill="none" stroke="#1a1a2e" strokeWidth="12" />
         {/* Arc — static decorative fill */}
@@ -100,10 +100,10 @@ export default function LoginPage() {
       <div className="min-h-screen flex" style={{ backgroundColor: '#06060e' }}>
 
         {/* ── Left decorative panel ── */}
-        <div className="hidden lg:flex flex-col justify-between w-[460px] shrink-0 border-r border-white/5 p-10 relative overflow-hidden">
+        <div className="hidden lg:flex flex-col justify-between w-115 shrink-0 border-r border-white/5 p-10 relative overflow-hidden">
           {/* bg glows */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-violet-700 blur-[140px] opacity-15 pointer-events-none" />
-          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full bg-indigo-600 blur-[100px] opacity-10 pointer-events-none" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 rounded-full bg-violet-700 blur-[140px] opacity-15 pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-75 h-75 rounded-full bg-indigo-600 blur-[100px] opacity-10 pointer-events-none" />
 
           {/* Grid overlay */}
           <div className="absolute inset-0 pointer-events-none" style={{
@@ -141,7 +141,7 @@ export default function LoginPage() {
                 { label: 'Member Since', value: 'Jan 2025' },
                 { label: 'Transfers', value: '23 Safe' },
               ].map((s) => (
-                <div key={s.label} className="rounded-xl border border-white/8 bg-white/[0.03] p-3.5">
+                <div key={s.label} className="rounded-xl border border-white/8 bg-white/3 p-3.5">
                   <p className="text-white/30 text-[10px] uppercase tracking-wider mb-1">{s.label}</p>
                   <p className="text-white font-semibold text-sm" style={{ fontFamily: 'Syne, sans-serif' }}>{s.value}</p>
                 </div>
@@ -191,7 +191,7 @@ export default function LoginPage() {
                     className={`rounded-xl border p-3.5 text-left transition-all duration-200 ${
                       userType === ut.value
                         ? 'border-violet-500/50 bg-violet-500/10'
-                        : 'border-white/8 bg-white/[0.03] hover:border-white/15'
+                        : 'border-white/8 bg-white/3 hover:border-white/15'
                     }`}
                   >
                     <span className={`text-lg block mb-1.5 ${userType === ut.value ? 'text-violet-400' : 'text-white/30'}`}>
@@ -297,7 +297,7 @@ export default function LoginPage() {
                 <button
                   key={p.label}
                   type="button"
-                  className="flex items-center justify-center gap-2 rounded-xl border border-white/8 bg-white/[0.03] py-3 text-sm text-white/50 hover:border-white/15 hover:text-white/70 transition-all duration-200"
+                  className="flex items-center justify-center gap-2 rounded-xl border border-white/8 bg-white/3 py-3 text-sm text-white/50 hover:border-white/15 hover:text-white/70 transition-all duration-200"
                 >
                   <span>{p.icon}</span>
                   <span>{p.label}</span>
