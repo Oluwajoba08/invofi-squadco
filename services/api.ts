@@ -1,14 +1,15 @@
 import { apiClient } from '@/utils/apiClient';
-import { 
-  AuthRequest, 
-  AuthResponse, 
-  Vendor, 
-  Individual, 
-  Institution, 
-  Verification, 
-  VerificationRequest, 
-  Wallet, 
-  Bank 
+import {
+  AuthRequest,
+  AuthResponse,
+  Vendor,
+  Individual,
+  Institution,
+  Verification,
+  VerificationRequest,
+  Wallet,
+  Bank,
+  InstitutionDashboardData
 } from './types';
 
 export const ApiService = {
@@ -26,7 +27,6 @@ export const ApiService = {
     create: (data: AuthRequest.CreateVendor) =>
       apiClient<Vendor>('/vendors', { data }),
 
-    // Matches http://localhost:9097/api/vendors?id=...
     getOne: (id: string) =>
       apiClient<Vendor>('/vendors', { params: { id } }),
 
@@ -34,9 +34,9 @@ export const ApiService = {
       apiClient<Vendor[]>('/vendors'),
 
     updateStatus: (id: string, status: 'trusted' | 'blocked', reason: string) =>
-      apiClient<Vendor>(`/vendors/${id}/status`, { 
-        method: 'PATCH', 
-        data: { status, reason } 
+      apiClient<Vendor>(`/vendors/${id}/status`, {
+        method: 'PATCH',
+        data: { status, reason }
       }),
 
     delete: (id: string) =>
@@ -58,11 +58,16 @@ export const ApiService = {
       apiClient<Institution>('/institutions', { data }),
 
     getDetails: (id: string) =>
-      apiClient<Institution>(`/institutions/${id}`),
+      apiClient<{ success: boolean; data: Institution }>(`/institutions/${id}`),
 
-    // Documentation shows /institutions/:id/requests twice
+    update: (id: string, data: Partial<AuthRequest.CreateInstitution>) =>
+      apiClient<{ success: boolean; data: Institution }>(`/institutions/${id}`, { method: 'PATCH', data }),
+
     getRequests: (id: string) =>
       apiClient<VerificationRequest[]>(`/institutions/${id}/requests`),
+
+    getDashboard: () =>
+      apiClient<{ success: boolean; data: InstitutionDashboardData }>('/institutions/dashboard'),
   },
 
   // --- VERIFICATIONS ---
@@ -76,12 +81,21 @@ export const ApiService = {
 
     createRequest: (data: AuthRequest.CreateVerificationReq) =>
       apiClient<VerificationRequest>('/verification-requests', { data }),
+
+    getAll: (params?: { page?: number; limit?: number; status?: string }) =>
+      apiClient<any>('/verification-requests', { params }),
+
+    getAVerificationRequest: (requestCode: string) =>
+      apiClient<any>(`/verification-requests/${requestCode}`),
+
+    approveRequest: (requestCode: string) =>
+      apiClient<any>(`/verification-requests/${requestCode}/approve`, { method: 'PATCH' }),
   },
 
   // --- GUEST VENDOR FLOW ---
   guest: {
     getRequest: (reqId: string) =>
-      apiClient<VerificationRequest>(`/verification-requests/guest/${reqId}`),
+      apiClient<{ success: boolean; data: VerificationRequest }>(`/verification-requests/guest/${reqId}`),
 
     joinRequest: (reqId: string, data: { fullName: string; phoneNumber: string }) =>
       apiClient<{ guestToken: string }>(`/verification-requests/guest/${reqId}/join`, { data }),
@@ -102,18 +116,26 @@ export const ApiService = {
     getDetails: (walletId: string) =>
       apiClient<Wallet>(`/wallets/${walletId}`),
 
+    getByOwner: (ownerId: string, ownerType: string) =>
+      apiClient<any>(`/wallets/owner/${ownerId}?ownerType=${ownerType}`),
+
     getBanks: () =>
       apiClient<Bank[]>('/payments/banks'),
   },
 
   payments: {
     release: (verificationId: string) =>
-      apiClient<void>('/payments/release', { data: { verificationId } }),
+      apiClient<any>('/payments/release', { data: { verificationId } }),
 
     getVendorPayments: (vendorId: string) =>
       apiClient<any[]>(`/payments/vendor/${vendorId}`),
 
     getStatus: (verificationId: string) =>
       apiClient<{ status: string }>(`/payments/status/${verificationId}`),
+  },
+
+  auditLogs: {
+    getAll: (params?: { page?: number; limit?: number; action?: string }) =>
+      apiClient<any>('/audit-logs', { params }),
   },
 };

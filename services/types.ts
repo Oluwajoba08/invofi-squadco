@@ -78,12 +78,10 @@ export namespace AuthRequest {
   }
 }
 
-/**
- * Data Models / Response Objects
- */
 export interface AuthResponse {
   token: string;
-  userType: UserType;
+  user: any;
+  userType: string;
 }
 
 export interface Vendor extends AuthRequest.CreateVendor {
@@ -123,21 +121,37 @@ export interface Verification {
 
 export interface VerificationRequest {
   _id: string;
-  requestId: string; // e.g., VP-REQ-A9ABCF6F
-  institutionId: string;
-  vendorEmail: string;
+  requestCode: string;
+  institutionId?: string;
+  institutionName?: string;
+  vendorEmail?: string;
   paymentAmount: number;
   paymentDescription: string;
-  status: 'pending' | 'joined' | 'submitted' | 'completed';
+  status: string;
+  expiresAt?: string;
+  createdAt?: string;
 }
 
 export interface Wallet {
   _id: string;
   ownerId: string;
-  balance: number;
-  accountNumber: string;
-  bankName: string;
+  ownerType: 'institution' | 'individual';
+  firstName: string;
+  lastName: string;
+  email: string;
   bvn: string;
+  address: string;
+  gender: string;
+  bankCode: string;
+  accountNumber: string;
+  mobileNumber: string;
+  settlementAccountNumber: string;
+  customerId: string;
+  balance: number;
+  status: string;
+  recentFundings?: any[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Bank {
@@ -150,4 +164,46 @@ export interface PaymentStatus {
   verificationId: string;
   amount: number;
   txRef?: string;
+}
+export interface InstitutionDashboardData {
+  institution: {
+    id: string;
+    name: string;
+    rcNumber: string;
+    email: string;
+    unverifiedVendorPolicy: string;
+  };
+  wallet: {
+    internalBalance: number;
+    currency: string;
+  };
+  stats: {
+    totalRequests: number;
+    trusted: number;
+    review: number;
+    blocked: number;
+    unverified: number;
+    expired: number;
+    pendingVendorAction: number;
+  };
+  recentRequests: {
+    requestCode: string;
+    vendorName: string;
+    paymentAmount: number;
+    status: string;
+    trustScore: number;
+    verdict: string;
+    createdAt: string;
+  }[];
+}
+
+export interface AuditLog {
+  _id: string;
+  action: string;
+  actorId: string;
+  actorType: string;
+  targetId?: string;
+  targetType?: string;
+  metadata: any;
+  createdAt: string;
 }

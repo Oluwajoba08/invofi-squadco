@@ -41,6 +41,8 @@ export const metadata: Metadata = {
   description: "Vproof is Nigeria's premier financial reputation layer, leveraging AI and decentralized identity to provide trust insights for individuals and businesses. Join the trust network today.",
 };
 
+import { Toaster } from "sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -55,6 +57,7 @@ export default function RootLayout({
         <TooltipProvider>
           {children}
         </TooltipProvider>
+        <Toaster richColors position="top-right" theme="dark" />
       </body>
     </html>
   );

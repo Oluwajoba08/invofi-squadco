@@ -8,7 +8,6 @@ import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 import { UserType } from '@/services/types';
 
-// ─── Shared UI ────────────────────────────────────────────────────────────────
 const inputCls =
   'w-full bg-zinc-900/80 border border-zinc-800 rounded-xl px-4 py-3.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 transition-colors duration-200';
 
@@ -24,17 +23,15 @@ function ErrorBanner({ message }: { message: string }) {
   );
 }
 
-// ─── User type config ─────────────────────────────────────────────────────────
 const USER_TYPES: { value: UserType; label: string; icon: string; hint: string }[] = [
   { value: 'individual', label: 'Individual', icon: '◎', hint: 'Personal account' },
   { value: 'vendor', label: 'Vendor', icon: '◈', hint: 'Business / supplier' },
   { value: 'institution', label: 'Institution', icon: '⬡', hint: 'Organisation / employer' },
 ];
 
-// ─── Score ring (decorative) ──────────────────────────────────────────────────
 function ScoreRingDeco() {
   return (
-    <div className="relative w-[220px] h-[220px] mx-auto">
+    <div className="relative w-55 h-55 mx-auto">
       {/* Outer glow */}
       <div className="absolute inset-0 rounded-full bg-violet-600 blur-[60px] opacity-20" />
       <svg viewBox="0 0 220 220" className="w-full h-full -rotate-90">
@@ -67,10 +64,9 @@ function ScoreRingDeco() {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
 export default function LoginPage() {
   const router = useRouter();
-  const { setToken } = useAuthStore();
+  const { setToken, setUser } = useAuthStore();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -85,9 +81,27 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const { token } = await ApiService.auth.login({ email, password, userType });
-      setToken(token);
-      router.push('/dashboard');
+      const responseData: any = await ApiService.auth.login({ email, password, userType });
+      const data = responseData.data;
+      console.log('Login Response Data:', data);
+      const resolvedUserType = data.userType || data.user?.role || userType;
+      console.log('Resolved UserType:', resolvedUserType);
+
+      setToken(data.token);
+
+      setUser({
+        userId: data.user?._id || data.user?.id,
+        userType: resolvedUserType,
+        displayName: data.user?.businessName || data.user?.fullName || data.user?.name || 'User',
+      });
+
+      if (resolvedUserType === 'individual') {
+        router.push('/individual-dashboard');
+      } else if (resolvedUserType === 'vendor') {
+        router.push('/vendor-dashboard');
+      } else if (resolvedUserType === 'institution') {
+        router.push('/institution-dashboard');
+      }
     } catch (err: any) {
       setError(err?.message ?? 'Login failed. Please check your credentials and try again.');
     } finally {
@@ -100,10 +114,10 @@ export default function LoginPage() {
       <div className="min-h-screen flex" style={{ backgroundColor: '#06060e' }}>
 
         {/* ── Left decorative panel ── */}
-        <div className="hidden lg:flex flex-col justify-between w-[460px] shrink-0 border-r border-white/5 p-10 relative overflow-hidden">
+        <div className="hidden lg:flex flex-col justify-between w-115 shrink-0 border-r border-white/5 p-10 relative overflow-hidden">
           {/* bg glows */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-violet-700 blur-[140px] opacity-15 pointer-events-none" />
-          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full bg-indigo-600 blur-[100px] opacity-10 pointer-events-none" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 rounded-full bg-violet-700 blur-[140px] opacity-15 pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-75 h-75 rounded-full bg-indigo-600 blur-[100px] opacity-10 pointer-events-none" />
 
           {/* Grid overlay */}
           <div className="absolute inset-0 pointer-events-none" style={{
@@ -173,7 +187,7 @@ export default function LoginPage() {
               Welcome back
             </h1>
             <p className="text-white/40 text-sm mb-10">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/signup" className="text-violet-400 hover:text-violet-300 transition-colors">
                 Get verified free →
               </Link>
