@@ -7,10 +7,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
 type Role = 'Individual' | 'Vendor' | 'Institution';
 
-// ─── Shared UI primitives ─────────────────────────────────────────────────────
 function Field({
   label,
   id,
@@ -71,7 +69,6 @@ function ErrorBanner({ message }: { message: string }) {
   );
 }
 
-// ─── Individual Form ──────────────────────────────────────────────────────────
 function IndividualForm() {
   const router = useRouter();
   const { setToken } = useAuthStore();
@@ -185,7 +182,6 @@ function IndividualForm() {
   );
 }
 
-// ─── Vendor Form ──────────────────────────────────────────────────────────────
 function VendorForm() {
   const router = useRouter();
   const { setToken } = useAuthStore();
@@ -291,7 +287,6 @@ function VendorForm() {
   );
 }
 
-// ─── Institution Form ─────────────────────────────────────────────────────────
 function InstitutionForm() {
   const router = useRouter();
   const { setToken } = useAuthStore();
@@ -390,14 +385,12 @@ function InstitutionForm() {
   );
 }
 
-// ─── Role descriptions ────────────────────────────────────────────────────────
 const ROLE_META: Record<Role, { icon: string; desc: string }> = {
   Individual: { icon: '◎', desc: 'Protect your personal transfers with a verified identity.' },
   Vendor: { icon: '◈', desc: 'Build trust with institutions by verifying your business.' },
   Institution: { icon: '⬡', desc: 'Screen vendors and reduce fraud across your payments.' },
 };
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
 export default function SignupPage() {
   const [role, setRole] = useState<Role>('Individual');
 
@@ -480,8 +473,8 @@ export default function SignupPage() {
                     type="button"
                     onClick={() => setRole(r)}
                     className={`flex-1 py-2.5 text-sm rounded-lg font-medium transition-all duration-200 ${role === r
-                        ? 'bg-violet-600 text-white shadow-lg'
-                        : 'text-white/40 hover:text-white/70'
+                      ? 'bg-violet-600 text-white shadow-lg'
+                      : 'text-white/40 hover:text-white/70'
                       }`}
                   >
                     {r}

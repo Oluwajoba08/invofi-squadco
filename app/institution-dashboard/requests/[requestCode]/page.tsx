@@ -44,7 +44,6 @@ export default function RequestDetailsPage({ params }: { params: Promise<{ reque
       setLoading(true);
 
       const response = await ApiService.verifications.getAVerificationRequest(requestCode);
-      console.log(response, "Response")
       if (response.success) {
         setRequest(response.data);
       } else {
@@ -93,7 +92,7 @@ export default function RequestDetailsPage({ params }: { params: Promise<{ reque
   };
 
   const handleCopyLink = () => {
-    const link = `http://localhost:3000/verify/${requestCode}`;
+    const link = `${process.env.NEXT_PUBLIC_API_URL}/verify/${requestCode}`;
     navigator.clipboard.writeText(link);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

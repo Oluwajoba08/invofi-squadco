@@ -9,7 +9,8 @@ import {
   VerificationRequest,
   Wallet,
   Bank,
-  InstitutionDashboardData
+  InstitutionDashboardData,
+  IndividualDashboardData,
 } from './types';
 
 export const ApiService = {
@@ -49,7 +50,13 @@ export const ApiService = {
       apiClient<Individual>('/individuals', { data }),
 
     getDetails: (id: string) =>
-      apiClient<Individual>(`/individuals/${id}`),
+      apiClient<{ success: boolean; data: Individual }>(`/individuals/${id}`),
+
+    getDashboard: () =>
+      apiClient<{ success: boolean; data: IndividualDashboardData }>('/individuals/dashboard'),
+
+    verify: (formData: FormData, individualId: string) =>
+      apiClient<any>(`/individuals/${individualId}/verify`, { data: formData }),
   },
 
   // --- INSTITUTIONS ---
@@ -120,7 +127,7 @@ export const ApiService = {
       apiClient<any>(`/wallets/owner/${ownerId}?ownerType=${ownerType}`),
 
     getBanks: () =>
-      apiClient<Bank[]>('/payments/banks'),
+      apiClient<{ success: boolean; data: Bank[] }>('/payments/banks'),
   },
 
   payments: {
@@ -132,6 +139,23 @@ export const ApiService = {
 
     getStatus: (verificationId: string) =>
       apiClient<{ status: string }>(`/payments/status/${verificationId}`),
+  },
+
+  sessions: {
+    create: (data: { initiatorProfileId: string; recipientEmail?: string; recipientPhone?: string; amount: number; description: string }) =>
+      apiClient<{ success: boolean; data: any }>('/sessions', { method: 'POST', data }),
+
+    getStatus: (sessionCode: string) =>
+      apiClient<{ success: boolean; data: any }>(`/sessions/${sessionCode}/status`),
+
+    getDetails: (sessionCode: string) =>
+      apiClient<{ success: boolean; data: any }>(`/sessions/${sessionCode}/details`),
+
+    joinGuest: (sessionCode: string, data: { fullName: string; phoneNumber: string }) =>
+      apiClient<{ success: boolean; data: { guestToken: string } }>(`/sessions/${sessionCode}/join-guest`, { method: 'POST', data }),
+
+    submitVerificationGuest: (sessionCode: string, formData: FormData) =>
+      apiClient<{ success: boolean; data: any }>(`/sessions/${sessionCode}/verify-guest`, { method: 'POST', data: formData }),
   },
 
   auditLogs: {

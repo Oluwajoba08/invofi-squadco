@@ -16,13 +16,6 @@ import {
 import { useAuthStore } from '@/store/useAuthStore';
 import { cn } from '@/lib/utils';
 
-const NAV_ITEMS = [
-  { label: 'Home', icon: Home, href: '/institution-dashboard' },
-  { label: 'Requests', icon: ShieldCheck, href: '/institution-dashboard/requests' },
-  { label: 'Wallet', icon: Wallet, href: '/institution-dashboard/wallet' },
-  { label: 'Settings', icon: Settings, href: '/institution-dashboard/settings' },
-];
-
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -32,6 +25,19 @@ export function Sidebar() {
     logout();
     router.push('/login');
   };
+
+  const navItems = userType === 'individual' 
+    ? [
+        { label: 'Home', icon: Home, href: '/individual-dashboard' },
+        { label: 'Wallet', icon: Wallet, href: '/individual-dashboard/wallet' },
+        { label: 'Settings', icon: Settings, href: '/individual-dashboard/settings' },
+      ]
+    : [
+        { label: 'Home', icon: Home, href: '/institution-dashboard' },
+        { label: 'Requests', icon: ShieldCheck, href: '/institution-dashboard/requests' },
+        { label: 'Wallet', icon: Wallet, href: '/institution-dashboard/wallet' },
+        { label: 'Settings', icon: Settings, href: '/institution-dashboard/settings' },
+      ];
 
   return (
     <aside className="w-64 h-screen border-r border-white/5 bg-[#06060e] flex flex-col shrink-0 sticky top-0">
@@ -46,7 +52,7 @@ export function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 px-4 space-y-2 mt-4">
         <p className="px-4 mb-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">Menu</p>
-        {NAV_ITEMS.map((item) => {
+        {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
@@ -82,8 +88,8 @@ export function Sidebar() {
             {displayName?.[0] || 'A'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-white truncate">{displayName || 'Institution'}</p>
-            <p className="text-[10px] text-white/30 truncate">{userType || 'Administrator'}</p>
+            <p className="text-sm font-semibold text-white truncate">{displayName || 'User'}</p>
+            <p className="text-[10px] text-white/30 truncate capitalize">{userType || 'Administrator'}</p>
           </div>
         </div>
 

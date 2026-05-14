@@ -197,6 +197,40 @@ export interface InstitutionDashboardData {
   }[];
 }
 
+export interface IndividualDashboardData {
+  profile: {
+    fullName: string;
+    verificationStatus: string;
+    trustScore: number;
+    lastVerifiedAt: string;
+  };
+  stats: {
+    walletBalance: number;
+    verificationsCount: number;
+    totalP2PVolume: number;
+  };
+  wallet: {
+    accountNumber: string;
+    bankCode: string;
+    status: string;
+  };
+  recentSessions: {
+    _id: string;
+    sessionCode: string;
+    otherParty?: string;
+    purpose?: string;
+    amount: number;
+    status: string;
+    createdAt: string;
+  }[];
+  recentVerifications: {
+    _id: string;
+    trustScore: number;
+    verdict: string;
+    createdAt: string;
+  }[];
+}
+
 export interface AuditLog {
   _id: string;
   action: string;

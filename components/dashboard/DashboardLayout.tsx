@@ -3,12 +3,28 @@
 import { Sidebar } from './Sidebar';
 import { motion } from 'framer-motion';
 import { DashboardProvider } from './DashboardContext';
+import { useState, useEffect } from 'react';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsHydrated(true);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isHydrated) return (
+    <div className="flex h-screen bg-[#020205] items-center justify-center">
+      <div className="animate-spin h-8 w-8 border-2 border-violet-500 border-t-transparent rounded-full" />
+    </div>
+  );
+
   return (
     <DashboardProvider>
       <div className="flex h-screen bg-[#06060e] text-white w-full max-w-full overflow-hidden">

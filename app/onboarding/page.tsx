@@ -18,7 +18,6 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 
-// ─── Design primitives ────────────────────────────────────────────────────────
 function GlowOrb({ className }: { className?: string }) {
   return <div className={`absolute rounded-full blur-[100px] opacity-20 pointer-events-none ${className}`} />;
 }
@@ -35,7 +34,6 @@ function Field({ label, id, hint, children }: { label: string; id: string; hint?
   );
 }
 
-// ─── Step config ──────────────────────────────────────────────────────────────
 const STEPS = [
   { id: 1, icon: '◎', label: 'Welcome', title: 'Welcome to vproof' },
   { id: 2, icon: '⬡', label: 'Wallet', title: 'Set Up Your Wallet' },
@@ -43,7 +41,6 @@ const STEPS = [
   { id: 4, icon: '▣', label: 'Done', title: 'You\'re Protected' },
 ];
 
-// ─── Step 1 — Welcome ─────────────────────────────────────────────────────────
 function StepWelcome({ onNext }: { onNext: () => void }) {
   const { displayName, userType } = useAuthStore();
 
@@ -100,7 +97,6 @@ function StepWelcome({ onNext }: { onNext: () => void }) {
   );
 }
 
-// ─── Step 2 — Wallet Setup ────────────────────────────────────────────────────
 function StepWallet({ onNext }: { onNext: () => void }) {
   const { userId, userType } = useAuthStore();
   const [loading, setLoading] = useState(false);
@@ -216,7 +212,6 @@ function StepWallet({ onNext }: { onNext: () => void }) {
   );
 }
 
-// ─── Step 3 — Document Roadmap ────────────────────────────────────────────────
 function StepDocuments({ onNext }: { onNext: () => void }) {
   const { userType } = useAuthStore();
   const isVendor = userType === 'vendor';
@@ -302,7 +297,6 @@ function StepDocuments({ onNext }: { onNext: () => void }) {
   );
 }
 
-// ─── Step 4 — Done ────────────────────────────────────────────────────────────
 function StepDone({ onFinish }: { onFinish: () => void }) {
   return (
     <div className="flex flex-col items-center text-center gap-6">
@@ -345,17 +339,22 @@ function StepDone({ onFinish }: { onFinish: () => void }) {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
 export default function OnboardingPage() {
   const router = useRouter();
-  const { setOnboarded } = useAuthStore();
+  const { setOnboarded, userType } = useAuthStore();
   const [step, setStep] = useState(1);
 
   const next = () => setStep((s) => Math.min(s + 1, 4));
 
   function finish() {
     setOnboarded();
-    router.push('/dashboard');
+    if (userType === 'individual') {
+      router.push('/individual-dashboard');
+    } else if (userType === 'vendor') {
+      router.push('/vendor-dashboard');
+    } else {
+      router.push('/institution-dashboard');
+    }
   }
 
   const progress = ((step - 1) / (STEPS.length - 1)) * 100;
