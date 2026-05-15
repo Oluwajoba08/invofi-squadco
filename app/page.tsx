@@ -7,7 +7,6 @@ import Features from "@/components/home/Features";
 import Testimonials from "@/components/home/Testimonials";
 import CTA from "@/components/home/CTA";
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
 export default function VproofLanding() {
   return (
     <>
@@ -32,7 +31,7 @@ export default function VproofLanding() {
                 vproof — Nigeria&apos;s Verification Layer
               </span>
             </div>
-            <p className="text-white/20 text-xs font-mono">© 2025 vproof Technologies Ltd. All rights reserved.</p>
+            <p className="text-white/20 text-xs font-mono">© 2026 Invofi Ltd. All rights reserved.</p>
           </div>
         </footer>
       </div>

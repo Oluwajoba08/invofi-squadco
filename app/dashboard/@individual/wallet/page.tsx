@@ -187,6 +187,7 @@ export default function WalletPage() {
         isOpen={isFundModalOpen}
         onClose={() => setIsFundModalOpen(false)}
         wallet={wallet}
+        onSuccess={refreshWallet}
       />
     </div>
   );

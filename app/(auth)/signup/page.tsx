@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 
-type Role = 'Individual' | 'Vendor' | 'Institution';
+type Role = 'Individual' | 'Institution'; // | 'Vendor';
 
 function Field({
   label,
@@ -387,7 +387,7 @@ function InstitutionForm() {
 
 const ROLE_META: Record<Role, { icon: string; desc: string }> = {
   Individual: { icon: '◎', desc: 'Protect your personal transfers with a verified identity.' },
-  Vendor: { icon: '◈', desc: 'Build trust with institutions by verifying your business.' },
+  // Vendor: { icon: '◈', desc: 'Build trust with institutions by verifying your business.' },
   Institution: { icon: '⬡', desc: 'Screen vendors and reduce fraud across your payments.' },
 };
 
@@ -467,7 +467,7 @@ export default function SignupPage() {
 
               {/* Role selector */}
               <div className="flex bg-white/5 border border-white/8 p-1 rounded-xl mb-8">
-                {(['Individual', 'Vendor', 'Institution'] as Role[]).map((r) => (
+                {(['Individual', 'Institution'] as Role[]).map((r) => (
                   <button
                     key={r}
                     type="button"
@@ -492,7 +492,7 @@ export default function SignupPage() {
                   transition={{ duration: 0.25 }}
                 >
                   {role === 'Individual' && <IndividualForm />}
-                  {role === 'Vendor' && <VendorForm />}
+                  {/* {role === 'Vendor' && <VendorForm />} */}
                   {role === 'Institution' && <InstitutionForm />}
                 </motion.div>
               </AnimatePresence>
