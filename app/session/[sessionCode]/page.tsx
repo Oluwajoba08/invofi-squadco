@@ -24,7 +24,7 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { FaceCapture } from '@/components/verification/FaceCapture';
 
-type WorkflowStep = 'landing' | 'join' | 'document' | 'biometric' | 'processing' | 'success';
+type WorkflowStep = 'landing' | 'join' | 'document' | 'biometric' | 'processing' | 'score_reveal' | 'success';
 
 export default function SessionPublicPage({ params }: { params: Promise<{ sessionCode: string }> }) {
   const { sessionCode } = use(params);
@@ -46,6 +46,7 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [faceImage, setFaceImage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sessionStatus, setSessionStatus] = useState<any>(null);
 
   useEffect(() => {
     async function fetchBanks() {
@@ -81,6 +82,37 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
     fetchSessionDetails();
   }, [sessionCode]);
 
+  const pollStatus = useCallback(async () => {
+    if (!guestToken && !session) return;
+    try {
+      const response = await ApiService.sessions.getStatus(sessionCode);
+      if (response.success) {
+        setSessionStatus(response.data);
+        
+        // Handle auto-transitions based on status
+        if (response.data.status === 'awaiting_both_consent' || 
+            response.data.status === 'awaiting_initiator_consent' || 
+            response.data.status === 'awaiting_recipient_consent') {
+          if (step === 'processing' || step === 'success') {
+             setStep('score_reveal');
+          }
+        } else if (response.data.status === 'payment_released') {
+          setStep('success');
+        }
+      }
+    } catch (error) {
+      console.error('Polling error:', error);
+    }
+  }, [sessionCode, guestToken, session, step]);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (step === 'processing' || step === 'score_reveal') {
+      interval = setInterval(pollStatus, 3000);
+    }
+    return () => clearInterval(interval);
+  }, [step, pollStatus]);
+
   const handleJoin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -111,6 +143,22 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
     submitVerification(image);
   };
 
+  const handleConsent = async () => {
+    if (!guestToken) return;
+    try {
+      setIsSubmitting(true);
+      const response = await ApiService.sessions.giveConsentAsGuest(sessionCode, guestToken);
+      if (response.success) {
+        toast.success('Consent recorded. Awaiting initiator...');
+        pollStatus();
+      }
+    } catch (error: any) {
+      toast.error(error?.message || 'Failed to record consent');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const submitVerification = async (capturedImage: string) => {
     if (!selectedFile || !guestToken) return;
 
@@ -130,8 +178,8 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
 
       const response = await ApiService.sessions.submitVerificationGuest(sessionCode, formData);
       if (response.success) {
-        setStep('success');
-        toast.success('Verification submitted successfully');
+        setStep('processing'); // Move to processing while AI works
+        toast.success('Verification submitted. Syncing results...');
       }
     } catch (error: any) {
       setStep('biometric');
@@ -511,6 +559,84 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
             </motion.div>
           )}
 
+          {step === 'score_reveal' && (
+            <motion.div
+              key="score_reveal"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full space-y-8"
+            >
+              <div className="text-center space-y-2">
+                <h2 className="text-2xl font-bold">Mutual Trust Revelation</h2>
+                <p className="text-white/40 text-sm">Review scores before finalizing the payout.</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Initiator Score */}
+                <div className="p-6 rounded-3xl bg-white/2 border border-white/5 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Initiator</p>
+                    <Badge className={cn(
+                      "px-2 py-0.5 rounded-md text-[9px] uppercase",
+                      sessionStatus?.initiatorVerdict === 'trusted' ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
+                    )}>
+                      {sessionStatus?.initiatorVerdict || 'Verified'}
+                    </Badge>
+                  </div>
+                  <div className="flex items-end gap-2">
+                    <span className="text-4xl font-black text-white" style={{ fontFamily: 'Syne, sans-serif' }}>{sessionStatus?.initiatorScore || '??'}</span>
+                    <span className="text-[10px] text-white/20 mb-1.5 uppercase font-bold">vScore™</span>
+                  </div>
+                  {sessionStatus?.theirConsent && (
+                    <div className="flex items-center gap-2 text-emerald-400 text-[10px] font-bold uppercase tracking-widest">
+                      <CheckCircle2 className="h-3 w-3" /> Consented
+                    </div>
+                  )}
+                </div>
+
+                {/* Recipient Score (You) */}
+                <div className="p-6 rounded-3xl bg-white/2 border border-emerald-500/10 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] font-bold text-emerald-400/40 uppercase tracking-widest">Recipient (You)</p>
+                    <Badge className="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-md text-[9px] uppercase">Verified</Badge>
+                  </div>
+                  <div className="flex items-end gap-2">
+                    <span className="text-4xl font-black text-white" style={{ fontFamily: 'Syne, sans-serif' }}>{sessionStatus?.recipientScore || '??'}</span>
+                    <span className="text-[10px] text-white/20 mb-1.5 uppercase font-bold">vScore™</span>
+                  </div>
+                  {sessionStatus?.yourConsent && (
+                    <div className="flex items-center gap-2 text-emerald-400 text-[10px] font-bold uppercase tracking-widest">
+                      <CheckCircle2 className="h-3 w-3" /> Consented
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="p-6 rounded-3xl bg-emerald-600/5 border border-emerald-500/10 flex items-center gap-4">
+                <ShieldCheck className="h-10 w-10 text-emerald-400 shrink-0" />
+                <div>
+                  <p className="text-xs font-bold text-white mb-1">Secure Escrow Active</p>
+                  <p className="text-[11px] text-white/40 leading-relaxed">Funds are locked and ready for release. Both parties must confirm to complete the transfer.</p>
+                </div>
+              </div>
+
+              {!sessionStatus?.yourConsent ? (
+                <Button
+                  onClick={handleConsent}
+                  disabled={isSubmitting}
+                  className="w-full h-16 bg-emerald-600 hover:bg-emerald-500 text-white rounded-3xl text-lg font-bold shadow-xl shadow-emerald-600/20 transition-all active:scale-95"
+                >
+                  {isSubmitting ? <Loader2 className="h-6 w-6 animate-spin mx-auto" /> : "Confirm & Receive Funds"}
+                </Button>
+              ) : (
+                <div className="w-full h-16 bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center gap-3 text-white/40 font-bold">
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Awaiting Initiator Confirmation...
+                </div>
+              )}
+            </motion.div>
+          )}
+
           {step === 'success' && (
             <motion.div
               key="success"
@@ -524,29 +650,56 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
                   <CheckCircle2 className="h-12 w-12 text-emerald-400" />
                 </div>
                 <div className="space-y-2">
-                  <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: 'Syne, sans-serif' }}>Escrow Secured</h2>
+                  <h2 className="text-4xl font-bold tracking-tight" style={{ fontFamily: 'Syne, sans-serif' }}>Payment Released</h2>
                   <p className="text-white/40 max-w-sm mx-auto">
-                    Your identity has been verified. The payment of ₦{session.amount?.toLocaleString()} from {session.initiatorName} is now fully secured in escrow.
+                    The transaction was successful. ₦{session.amount?.toLocaleString()} has been transferred to your settlement account.
                   </p>
                 </div>
               </div>
 
-              <div className="bg-linear-to-br from-emerald-600 to-teal-700 rounded-[2.5rem] p-8 shadow-2xl shadow-emerald-600/20 text-left space-y-6">
+              <div className="p-8 rounded-[2.5rem] bg-white/2 border border-white/5 text-left space-y-6">
+                <div className="flex items-center justify-between">
+                  <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Transaction Receipt</p>
+                  <Badge variant="outline" className="text-[9px] border-emerald-500/20 text-emerald-400 uppercase tracking-widest">Success</Badge>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex justify-between items-end border-b border-white/5 pb-4">
+                    <div>
+                      <p className="text-[9px] text-white/20 uppercase font-bold mb-1">Amount</p>
+                      <p className="text-2xl font-black text-white">₦{session.amount?.toLocaleString()}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[9px] text-white/20 uppercase font-bold mb-1">Reference</p>
+                      <p className="text-xs font-mono text-white/60">{sessionStatus?.squadTransactionRef || 'N/A'}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-[9px] text-white/20 uppercase font-bold mb-1">From</p>
+                      <p className="text-sm font-bold text-white/80">{session.initiatorName}</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-white/20 uppercase font-bold mb-1">To</p>
+                      <p className="text-sm font-bold text-white/80">{session.guestDetails?.fullName || 'You'}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-linear-to-br from-indigo-600 to-violet-700 rounded-[2.5rem] p-8 shadow-2xl shadow-indigo-600/20 text-left space-y-6">
                 <div className="space-y-2">
-                  <h3 className="text-xl font-bold">Claim your TrustScore™</h3>
+                  <h3 className="text-xl font-bold">Keep your TrustScore™</h3>
                   <p className="text-white/70 text-sm leading-relaxed">
-                    Sign up to track your payment history, manage your wallet, and build a verified profile for future transactions.
+                    You just completed a verified transaction. Create an account to permanently claim this successful reputation.
                   </p>
                 </div>
                 <Button className="w-full h-14 bg-white text-black hover:bg-white/90 rounded-2xl font-bold flex items-center justify-center gap-2" onClick={() => router.push('/signup')}>
-                  Get Started
+                  Claim Profile
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
-
-              <p className="text-[10px] font-bold text-white/10 uppercase tracking-[0.3em]">
-                Secure P2P Transaction Engine
-              </p>
             </motion.div>
           )}
         </AnimatePresence>

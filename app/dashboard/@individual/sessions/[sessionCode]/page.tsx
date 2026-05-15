@@ -12,7 +12,6 @@ import {
   Banknote,
   User,
   Shield,
-  CreditCard,
   History
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -34,33 +33,34 @@ export default function SessionDetailsPage({ params }: { params: Promise<{ sessi
 
   const fetchDetails = useCallback(async () => {
     try {
-      setLoading(true);
-      const response = await ApiService.sessions.getDetails(sessionCode);
+      const response = await ApiService.sessions.getStatus(sessionCode);
       if (response.success) {
         setSession(response.data);
       }
     } catch (error) {
       console.error('Error fetching session details:', error);
-      toast.error('Failed to load session details');
     } finally {
       setLoading(false);
     }
   }, [sessionCode]);
 
   useEffect(() => {
-    Promise.resolve().then(fetchDetails);
+    Promise.resolve().then(() => fetchDetails());
+
+    const interval = setInterval(fetchDetails, 3000);
+    return () => clearInterval(interval);
   }, [fetchDetails]);
 
-  const handleRelease = async () => {
+  const handleConsent = async () => {
     try {
-      const verificationId = session.recipientVerificationId;
       setIsReleasing(true);
-
-      const response = await ApiService.payments.release(verificationId);
-      toast.success('Funds released successfully!');
-      fetchDetails();
+      const response = await ApiService.sessions.giveConsent(sessionCode, userId!);
+      if (response.success) {
+        toast.success('Confirmation recorded!');
+        fetchDetails();
+      }
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to release funds');
+      toast.error(error?.message || 'Failed to record confirmation');
     } finally {
       setIsReleasing(false);
     }
@@ -92,12 +92,17 @@ export default function SessionDetailsPage({ params }: { params: Promise<{ sessi
   const isInitiator = session.initiatorProfileId === userId;
 
   const statusMap: Record<string, { label: string; color: string; bg: string; border: string }> = {
-    initiator_verified: { label: 'Awaiting Recipient', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
+    initiator_verified: { label: 'Payer Verified', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
     recipient_verified: { label: 'Recipient Verified', color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/20' },
-    both_verified: { label: 'Ready for Release', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
+    both_verified: { label: 'Both Verified', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
+    awaiting_both_consent: { label: 'Awaiting Confirmations', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
+    awaiting_initiator_consent: { label: 'Awaiting Payer', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
+    awaiting_recipient_consent: { label: 'Awaiting Recipient', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
+    payment_released: { label: 'Payment Released', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
     both_verifying: { label: 'Verification in Progress', color: 'text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/20' },
     completed: { label: 'Completed', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
     expired: { label: 'Expired', color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/20' },
+    blocked: { label: 'Blocked', color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/20' },
   };
 
   const statusConfig = statusMap[session.status] || {
@@ -192,12 +197,17 @@ export default function SessionDetailsPage({ params }: { params: Promise<{ sessi
                 <p className="text-sm font-bold text-white">{!isInitiator ? 'You (Recipient)' : session.recipientEmail || session.recipientPhone || 'Guest Recipient'}</p>
                 <p className="text-xs text-white/40">{session.status === 'both_verified' || session.status === 'completed' ? 'Verified & Validated' : 'Verification Pending'}</p>
               </div>
-              {session.status === 'both_verified' || session.status === 'completed' || session.status === 'recipient_verified' ? (
+              {session.status === 'both_verified' || session.status === 'completed' || session.status === 'payment_released' || session.status === 'recipient_verified' || session.status.includes('consent') ? (
                 <ShieldCheck className="h-5 w-5 text-emerald-400 ml-auto" />
               ) : (
                 <Clock className="h-5 w-5 text-amber-400 ml-auto animate-pulse" />
               )}
             </div>
+            {session.theirConsent && (
+              <div className="flex items-center gap-2 mt-4 text-[10px] font-bold text-emerald-400 uppercase tracking-widest">
+                <CheckCircle2 className="h-3 w-3" /> Confirmed Confirmation
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -345,8 +355,8 @@ export default function SessionDetailsPage({ params }: { params: Promise<{ sessi
 
           <div className="flex items-start gap-6 relative z-10">
             <div className={cn("h-8 w-8 rounded-full flex items-center justify-center shrink-0",
-              session.status === 'completed' ? "bg-emerald-600 shadow-lg shadow-emerald-600/20" : "bg-white/5")}>
-              {session.status === 'completed' ? <CheckCircle2 className="h-4 w-4 text-white" /> : <History className="h-4 w-4 text-white/20" />}
+              (['payment_released', 'completed'].includes(session.status)) ? "bg-emerald-600 shadow-lg shadow-emerald-600/20" : "bg-white/5")}>
+              {['payment_released', 'completed'].includes(session.status) ? <CheckCircle2 className="h-4 w-4 text-white" /> : <History className="h-4 w-4 text-white/20" />}
             </div>
             <div>
               <p className="text-sm font-bold text-white">Fund Release</p>
@@ -357,9 +367,9 @@ export default function SessionDetailsPage({ params }: { params: Promise<{ sessi
       </div>
 
       <div className="pt-8">
-        {isInitiator && session.status === 'both_verified' && (
+        {['awaiting_both_consent', 'awaiting_initiator_consent', 'awaiting_recipient_consent'].includes(session.status) && (
           <div className="space-y-4">
-            {(session.recipientTrustScore || 0) < 75 && (
+            {isInitiator && (session.recipientScore || 0) < 75 && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -367,27 +377,30 @@ export default function SessionDetailsPage({ params }: { params: Promise<{ sessi
               >
                 <ShieldAlert className="h-5 w-5 text-amber-500 shrink-0" />
                 <p>
-                  <span className="text-amber-400 font-bold">Release Restricted:</span> The recipient&apos;s TrustScore™ ({(session.recipientTrustScore || 0)}) is below the required threshold of 75. Please contact support or the recipient for manual verification.
+                  <span className="text-amber-400 font-bold">Risk Warning:</span> The recipient&apos;s TrustScore™ ({(session.recipientScore || 0)}) is below the recommended threshold of 75. Proceed with caution.
                 </p>
               </motion.div>
             )}
-            <Button
-              onClick={handleRelease}
-              disabled={isReleasing || (session.recipientTrustScore || 0) < 75}
-              className={cn(
-                "w-full h-16 rounded-3xl text-lg font-bold shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-3",
-                (session.recipientTrustScore || 0) >= 75
-                  ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-600/20"
-                  : "bg-white/5 text-white/20 border border-white/5 cursor-not-allowed"
-              )}
-            >
-              {isReleasing ? <Loader2 className="h-6 w-6 animate-spin" /> : (
-                <>
-                  <CreditCard className="h-6 w-6" />
-                  {(session.recipientTrustScore || 0) >= 75 ? 'Release Payment to Recipient' : 'Payment Locked'}
-                </>
-              )}
-            </Button>
+
+            {!session.yourConsent ? (
+              <Button
+                onClick={handleConsent}
+                disabled={isReleasing}
+                className="w-full h-16 bg-emerald-600 hover:bg-emerald-500 text-white rounded-3xl text-lg font-bold shadow-2xl shadow-emerald-600/20 transition-all active:scale-95 flex items-center justify-center gap-3"
+              >
+                {isReleasing ? <Loader2 className="h-6 w-6 animate-spin" /> : (
+                  <>
+                    <ShieldCheck className="h-6 w-6" />
+                    {isInitiator ? 'Confirm & Release Payment' : 'Confirm & Receive Payment'}
+                  </>
+                )}
+              </Button>
+            ) : (
+              <div className="w-full h-16 bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center gap-3 text-white/40 font-bold italic">
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Waiting for the other party to confirm...
+              </div>
+            )}
           </div>
         )}
 
@@ -401,10 +414,20 @@ export default function SessionDetailsPage({ params }: { params: Promise<{ sessi
           </Button>
         )}
 
-        {session.status === 'completed' && (
-          <div className="flex items-center justify-center gap-3 p-6 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-            <CheckCircle2 className="h-6 w-6" />
-            <p className="font-bold">Transaction Completed & Settled</p>
+        {session.status === 'payment_released' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-center gap-3 p-6 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+              <CheckCircle2 className="h-6 w-6" />
+              <p className="font-bold">Transaction Successfully Released</p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-[#0a0a0f] border border-white/5 space-y-4">
+              <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest px-1">Payment Reference</p>
+              <div className="flex items-center justify-between bg-white/2 p-4 rounded-xl border border-white/5 font-mono text-sm text-emerald-400/80">
+                {session.squadTransactionRef}
+                <Badge variant="outline" className="border-emerald-500/20 text-emerald-400 text-[8px] uppercase">Success</Badge>
+              </div>
+            </div>
           </div>
         )}
       </div>

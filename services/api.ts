@@ -128,6 +128,9 @@ export const ApiService = {
 
     getBanks: () =>
       apiClient<{ success: boolean; data: Bank[] }>('/payments/banks'),
+
+    simulateFunding: (data: { accountNumber: string; amount: number }) =>
+      apiClient<any>('/wallets/simulate-funding', { method: 'POST', data }),
   },
 
   payments: {
@@ -139,6 +142,30 @@ export const ApiService = {
 
     getStatus: (verificationId: string) =>
       apiClient<{ status: string }>(`/payments/status/${verificationId}`),
+
+    verifyPayment: (data: { verificationId: string; document: File }) => {
+      const formData = new FormData();
+      formData.append('verificationId', data.verificationId);
+      formData.append('document', data.document);
+      return apiClient<any>('/payments/verify-payment', {
+        method: 'POST',
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    },
+
+    analyseScreenshot: (data: { amount: number; document: File; senderName?: string; date?: string }) => {
+      const formData = new FormData();
+      formData.append('amount', data.amount.toString());
+      formData.append('document', data.document);
+      if (data.senderName) formData.append('senderName', data.senderName);
+      if (data.date) formData.append('date', data.date);
+      return apiClient<any>('/payments/analyse-screenshot', {
+        method: 'POST',
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+    },
   },
 
   sessions: {
@@ -156,6 +183,12 @@ export const ApiService = {
 
     submitVerificationGuest: (sessionCode: string, formData: FormData) =>
       apiClient<{ success: boolean; data: any }>(`/sessions/${sessionCode}/verify-guest`, { method: 'POST', data: formData }),
+
+    giveConsent: (sessionCode: string, profileId: string) =>
+      apiClient<{ success: boolean; data: any }>(`/sessions/${sessionCode}/consent`, { method: 'POST', data: { profileId } }),
+
+    giveConsentAsGuest: (sessionCode: string, guestToken: string) =>
+      apiClient<{ success: boolean; data: any }>(`/sessions/${sessionCode}/consent-guest`, { method: 'POST', data: { guestToken } }),
   },
 
   auditLogs: {
