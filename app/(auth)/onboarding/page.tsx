@@ -114,7 +114,14 @@ function StepWallet({ onNext }: { onNext: () => void }) {
     address: '',
     accountNumber: '',
     bank: '',
+    dateOfBirth: '',
+    nin: '',
   });
+
+  const formatToDDMMYYYY = (dateString: string): string => {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
 
   const set = (key: keyof typeof formData) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setFormData((p) => ({ ...p, [key]: e.target.value }));
@@ -127,6 +134,8 @@ function StepWallet({ onNext }: { onNext: () => void }) {
     if (!formData.bank){ setError('Please select a bank.'); return; }
     if (!formData.accountNumber){ setError('Please input bank account number.'); return; }
     if (!formData.address){ setError('Please input address.'); return; }
+    if (formData.nin.length !== 11) { setError('NIN must be 11 digits.'); return; }
+    if (!formData.dateOfBirth) { setError('Please enter your date of birth.'); return; }
 
     setLoading(true);
     try {
@@ -138,6 +147,8 @@ function StepWallet({ onNext }: { onNext: () => void }) {
         address: formData.address,
         accountNumber: formData.accountNumber,
         bankCode: formData.bank,
+        dateOfBirth: formatToDDMMYYYY(formData.dateOfBirth),
+        nin: formData.nin,
       });
       onNext();
     } catch (err: any) {
@@ -218,6 +229,21 @@ function StepWallet({ onNext }: { onNext: () => void }) {
               <SelectItem value="female">Female</SelectItem>
             </SelectContent>
           </Select>
+        </Field>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-3">
+        <Field label="NIN" id="w-nin" hint="11-digit National Identity Number">
+          <Input
+            id="w-nin" type="text" inputMode="numeric" maxLength={11} placeholder="12345678901" required
+            value={formData.nin} onChange={set('nin')}
+          />
+        </Field>
+        <Field label="Date of Birth" id="w-dob" hint="Format: DD/MM/YYYY">
+          <Input
+            id="w-dob" type="date" required
+            value={formData.dateOfBirth} onChange={set('dateOfBirth')}
+          />
         </Field>
       </div>
 

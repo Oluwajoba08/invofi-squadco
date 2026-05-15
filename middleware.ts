@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value 
   
   const isAuthPage = request.nextUrl.pathname.startsWith('/login') || 
-                     request.nextUrl.pathname.startsWith('/register')
+                     request.nextUrl.pathname.startsWith('/signup')
 
   // 2. If they are logged in and trying to access an auth page, send them to dashboard
   if (token && isAuthPage) {
@@ -23,5 +23,5 @@ export function middleware(request: NextRequest) {
 
 // 4. Configure which paths this middleware runs on
 export const config = {
-  matcher: ['/dashboard/:path*', '/login', '/register'],
+  matcher: ['/dashboard/:path*', '/login', '/signup'],
 }
