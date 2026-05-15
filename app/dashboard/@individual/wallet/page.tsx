@@ -101,7 +101,7 @@ export default function WalletPage() {
               <div className="p-4 rounded-2xl bg-white/3 border border-white/5 space-y-1">
                 <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Bank Name</p>
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-bold text-white">Moniepoint MFB</p>
+                  <p className="text-sm font-bold text-white">GTBank</p>
                   <Banknote className="h-4 w-4 text-emerald-500/50" />
                 </div>
               </div>
@@ -109,9 +109,9 @@ export default function WalletPage() {
               <div className="p-4 rounded-2xl bg-white/3 border border-white/5 space-y-1 group">
                 <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Account Number</p>
                 <div className="flex items-center justify-between">
-                  <p className="text-lg font-black text-white font-mono tracking-wider">{wallet?.settlementAccountNumber || '———'}</p>
+                  <p className="text-lg font-black text-white font-mono tracking-wider">{wallet?.accountNumber || '———'}</p>
                   <button
-                    onClick={() => copyToClipboard(wallet?.settlementAccountNumber || '', 'Account number')}
+                    onClick={() => copyToClipboard(wallet?.accountNumber || '', 'Account number')}
                     className="p-2 hover:bg-white/5 rounded-lg text-white/40 hover:text-white transition-colors"
                   >
                     <Copy className="h-4 w-4" />
