@@ -97,8 +97,8 @@ export default function RiskDemo() {
                 <div className="rounded-xl bg-red-500/15 border border-red-500/30 p-4 mb-5">
                   <p className="text-red-400 font-semibold text-sm mb-1">⚠ High Fraud Risk Detected</p>
                   <p className="text-red-300/70 text-xs leading-relaxed">
-                    This recipient's vScore is below 50. They have incomplete or unverifiable documentation.
-                    Proceed only if you can independently confirm this entity's legitimacy.
+                    This recipient&apos;s vScore is below 50. They have incomplete or unverifiable documentation.
+                    Proceed only if you can independently confirm this entity&apos;s legitimacy.
                   </p>
                 </div>
               ) : (
