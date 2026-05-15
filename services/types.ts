@@ -62,6 +62,7 @@ export namespace AuthRequest {
     address: string;
     accountNumber: string;
     bankCode: string;
+    phoneNumber: string;
   }
 
   export interface CreateVerificationReq {

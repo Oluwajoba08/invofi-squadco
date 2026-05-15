@@ -95,14 +95,11 @@ export default function LoginPage() {
         displayName: data.user?.businessName || data.user?.fullName || data.user?.name || 'User',
       });
 
-      // if (resolvedUserType === 'individual') {
-      //   router.push('/dashboard');
-      // } else if (resolvedUserType === 'vendor') {
-      //   router.push('/dashboard');
-      // } else if (resolvedUserType === 'institution') {
-      //   router.push('/dashboard');
-      // }
-      router.push('/dashboard');
+      if (resolvedUserType === 'individual' && !data.user?.bankAccount) {
+        router.push('/onboarding');
+      } else {
+        router.push('/dashboard');
+      }
     } catch (err: any) {
       setError(err?.message ?? 'Login failed. Please check your credentials and try again.');
     } finally {
