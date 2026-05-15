@@ -16,7 +16,7 @@ import {
 import { useAuthStore } from '@/store/useAuthStore';
 import { cn } from '@/lib/utils';
 
-export function Sidebar() {
+export function Sidebar({ isMobileDrawer = false }: { isMobileDrawer?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
   const { userId, displayName, userType, logout } = useAuthStore();
@@ -40,7 +40,16 @@ export function Sidebar() {
       ];
 
   return (
-    <aside className="w-64 h-screen border-r border-white/5 bg-[#06060e] flex flex-col shrink-0 sticky top-0">
+    <aside 
+      className={cn(
+        "w-64 bg-[#06060e] flex flex-col shrink-0",
+        // If it's acting as the main desktop layout, give it height and hide on mobile.
+        // If it's inside the mobile drawer, take full height of its container.
+        isMobileDrawer 
+          ? "h-full" 
+          : "hidden md:flex h-screen border-r border-white/5 sticky top-0"
+      )}
+    >
       {/* Logo Section */}
       <div className="p-8 flex items-center gap-3">
         <div className="h-8 w-8 rounded-xl bg-violet-600 flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.3)]">

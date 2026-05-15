@@ -4,6 +4,7 @@ import { Sidebar } from './Sidebar';
 import { motion } from 'framer-motion';
 import { DashboardProvider } from './DashboardContext';
 import { useState, useEffect } from 'react';
+import { MobileHeader } from './MobileHeader';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -27,9 +28,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <DashboardProvider>
-      <div className="flex h-screen bg-[#06060e] text-white w-full max-w-full overflow-hidden">
+      <div className="flex flex-col md:flex-row min-h-screen bg-[#06060e] text-white w-full max-w-full overflow-x-hidden">
+        {/* Shows top bar with hamburger menu on mobile */}
+        <MobileHeader />
         <Sidebar />
-        <main className="flex-1 bg-[#020205] overflow-y-auto overflow-x-hidden relative">
+        <main className="flex-1 bg-[#020205] overflow-y-auto overflow-x-hidden relative min-h-[calc(100vh-69px)] md:min-h-screen">
           {/* Background Glows */}
           <div className="absolute top-0 right-0 w-150 h-150 bg-violet-700/10 blur-[150px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-150 h-150 bg-indigo-700/5 blur-[150px] translate-y-1/3 -translate-x-1/3 pointer-events-none" />
@@ -38,7 +41,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="relative z-10 min-h-full"
+            className="relative z-10 min-h-full p-6 md:p-8" // Added responsive padding option if desired
           >
             {children}
           </motion.div>
