@@ -67,7 +67,7 @@ function StepWelcome({ onNext }: { onNext: () => void }) {
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>
+        <h2 className="text-xl md:text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>
           Welcome{displayName ? `, ${displayName.split(' ')[0]}` : ''}. 🎉
         </h2>
         <p className="text-white/40 text-sm leading-relaxed max-w-sm">
@@ -351,7 +351,7 @@ function StepDone({ onFinish }: { onFinish: () => void }) {
       </motion.div>
 
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>
+        <h2 className="text-xl md:text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>
           You&apos;re all set!
         </h2>
         <p className="text-white/40 text-sm leading-relaxed max-w-sm">

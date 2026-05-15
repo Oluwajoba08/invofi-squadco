@@ -205,7 +205,7 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
           <ShieldAlert className="h-10 w-10 text-red-400" />
         </div>
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-xl md:text-2xl font-bold text-white">
             {session?.status === 'expired' ? 'Session Expired' : 'Session Unavailable'}
           </h1>
           <p className="text-white/40 max-w-xs mx-auto">
@@ -268,7 +268,7 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
                     <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">Escrow Balance</p>
                     <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest">Locked</Badge>
                   </div>
-                  <h2 className="text-5xl font-black text-white tracking-tighter" style={{ fontFamily: 'Syne, sans-serif' }}>
+                  <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter" style={{ fontFamily: 'Syne, sans-serif' }}>
                     ₦{session.amount?.toLocaleString()}
                   </h2>
                   <div className="pt-4 border-t border-white/5 space-y-2">
@@ -302,7 +302,7 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
               className="w-full space-y-8"
             >
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold">Who are you?</h2>
+                <h2 className="text-xl md:text-2xl font-bold">Who are you?</h2>
                 <p className="text-white/40 text-sm">We need to match your details with the session invite.</p>
               </div>
 
@@ -362,7 +362,7 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
                 <div className="flex items-center gap-2 mb-1">
                   <Badge variant="outline" className="text-[9px] border-emerald-500/20 text-emerald-400/60 uppercase tracking-tighter">Privacy Mode Active</Badge>
                 </div>
-                <h2 className="text-2xl font-bold">Identity Evidence</h2>
+                <h2 className="text-xl md:text-2xl font-bold">Identity Evidence</h2>
                 <p className="text-white/40 text-sm">Upload a valid government-issued ID (NIN, Passport, or DL).</p>
                 <div className="flex items-start gap-2 p-3 rounded-xl bg-violet-500/5 border border-violet-500/10 mt-4">
                   <Lock className="h-3 w-3 text-violet-400 mt-0.5 shrink-0" />
@@ -503,7 +503,7 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
               className="w-full flex flex-col items-center"
             >
               <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold">Liveness Check</h2>
+                <h2 className="text-xl md:text-2xl font-bold">Liveness Check</h2>
                 <p className="text-white/40 text-sm">Position your face and blink when prompted.</p>
               </div>
 
@@ -567,7 +567,7 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
               className="w-full space-y-8"
             >
               <div className="text-center space-y-2">
-                <h2 className="text-2xl font-bold">Mutual Trust Revelation</h2>
+                <h2 className="text-xl md:text-2xl font-bold">Mutual Trust Revelation</h2>
                 <p className="text-white/40 text-sm">Review scores before finalizing the payout.</p>
               </div>
 

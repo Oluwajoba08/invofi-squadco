@@ -208,7 +208,7 @@ export function CreateSessionModal({ isOpen, onClose, initiatorProfileId, onSucc
                   <CheckCircle2 className="h-10 w-10" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>Session Active</h3>
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>Session Active</h3>
                   <p className="text-sm text-white/40 max-w-xs mx-auto">We&apos;ve sent an invitation to the recipient. The funds will be held securely in escrow.</p>
                 </div>
               </motion.div>

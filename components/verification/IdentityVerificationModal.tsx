@@ -254,7 +254,7 @@ export function IdentityVerificationModal({ isOpen, onClose, onSuccess }: Identi
                   <CheckCircle2 className="h-12 w-12" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>Verification Pending</h3>
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>Verification Pending</h3>
                   <p className="text-sm text-white/40 max-w-xs mx-auto">Your identity documents and biometrics have been submitted for review. Your vScore™ will update shortly.</p>
                 </div>
                 <Button

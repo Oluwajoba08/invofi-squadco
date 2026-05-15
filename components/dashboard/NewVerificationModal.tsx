@@ -95,7 +95,7 @@ export function NewVerificationModal({ isOpen, onClose, onSuccess }: NewVerifica
               <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-size:[20px_20px]" />
 
               <div className="relative z-10 text-center">
-                <h3 className="text-2xl font-bold text-white mb-1">New Verification</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-1">New Verification</h3>
                 <p className="text-white/40 text-sm">Secure vendor trust in seconds</p>
               </div>
 

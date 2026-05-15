@@ -73,7 +73,7 @@ export default function IndividualDashboard() {
             {profile?.fullName?.[0] || displayName?.[0] || 'U'}
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight" style={{ fontFamily: 'Syne, sans-serif' }}>
+            <h1 className="text-xl md:text-2xl font-bold text-white tracking-tight" style={{ fontFamily: 'Syne, sans-serif' }}>
               {profile?.fullName || displayName || 'User Name'}
             </h1>
             <p className="text-sm text-white/40">Individual profile</p>
@@ -87,7 +87,7 @@ export default function IndividualDashboard() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative group overflow-hidden rounded-[2rem] bg-linear-to-br from-emerald-600 to-teal-700 p-8 shadow-[0_20px_50px_rgba(16,185,129,0.2)]"
+        className="relative group overflow-hidden rounded-[2rem] bg-linear-to-br from-emerald-600 to-teal-700 p-4 md:p-8 shadow-[0_20px_50px_rgba(16,185,129,0.2)]"
       >
         <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
           <WalletIcon size={120} />
@@ -96,7 +96,7 @@ export default function IndividualDashboard() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2">
             <p className="text-xs font-bold text-white/60 uppercase tracking-widest">Wallet balance</p>
-            <h2 className="text-5xl font-black text-white tracking-tighter" style={{ fontFamily: 'Syne, sans-serif' }}>
+            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter" style={{ fontFamily: 'Syne, sans-serif' }}>
               ₦{stats?.walletBalance?.toLocaleString() || '0'}
             </h2>
           </div>
