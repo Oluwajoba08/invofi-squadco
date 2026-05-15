@@ -64,6 +64,7 @@ export namespace AuthRequest {
     bankCode: string;
     dateOfBirth: string;
     nin: string;
+    phoneNumber: string;
   }
 
   export interface CreateVerificationReq {

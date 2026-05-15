@@ -116,6 +116,7 @@ function StepWallet({ onNext }: { onNext: () => void }) {
     bank: '',
     dateOfBirth: '',
     nin: '',
+    phoneNumber: '',
   });
 
   const formatToDDMMYYYY = (dateString: string): string => {
@@ -136,6 +137,7 @@ function StepWallet({ onNext }: { onNext: () => void }) {
     if (!formData.address) { setError('Please input address.'); return; }
     if (formData.nin.length !== 11) { setError('NIN must be 11 digits.'); return; }
     if (!formData.dateOfBirth) { setError('Please enter your date of birth.'); return; }
+    if (!formData.phoneNumber) { setError('Please enter your phone number.'); return; }
 
     setLoading(true);
     try {
@@ -149,6 +151,7 @@ function StepWallet({ onNext }: { onNext: () => void }) {
         bankCode: formData.bank,
         dateOfBirth: formatToDDMMYYYY(formData.dateOfBirth),
         nin: formData.nin,
+        phoneNumber: formData.phoneNumber,
       });
       onNext();
     } catch (err: any) {
@@ -260,6 +263,13 @@ function StepWallet({ onNext }: { onNext: () => void }) {
           />
         </Field>
       </div>
+
+      <Field label="Phone Number" id="w-phoneNumber">
+        <Input
+          id="w-phoneNumber" type="text" placeholder="07000000000" required
+          value={formData.phoneNumber} onChange={set('phoneNumber')}
+        />
+      </Field>
 
       <Field label="Residential Address" id="w-address">
         <Input
