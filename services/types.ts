@@ -35,12 +35,12 @@ export namespace AuthRequest {
     fullName: string;
     email: string;
     password: string;
-    bvn: string;
-    nin: string;
-    bankAccount: string;
-    bankCode: string;
-    phoneNumber: string;
-    dateOfBirth: string; // Format: DD/MM/YYYY
+    // bvn: string;
+    // nin: string;
+    // bankAccount: string;
+    // bankCode: string;
+    // phoneNumber: string;
+    // dateOfBirth: string; // Format: DD/MM/YYYY
   }
 
   export interface CreateInstitution {
@@ -61,6 +61,7 @@ export namespace AuthRequest {
     gender: 'male' | 'female';
     address: string;
     accountNumber: string;
+    bankCode: string;
   }
 
   export interface CreateVerificationReq {

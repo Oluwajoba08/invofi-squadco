@@ -79,12 +79,12 @@ function IndividualForm() {
     email: '',
     password: '',
     confirmPassword: '',
-    bvn: '',
-    nin: '',
-    bankAccount: '',
-    bankCode: '',
-    phoneNumber: '',
-    dateOfBirth: '',
+    // bvn: '',
+    // nin: '',
+    // bankAccount: '',
+    // bankCode: '',
+    // phoneNumber: '',
+    // dateOfBirth: '',
   });
 
   const set = (key: keyof typeof formData) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -98,14 +98,14 @@ function IndividualForm() {
       setError('Passwords do not match.');
       return;
     }
-    if (formData.bvn.length !== 11) {
-      setError('BVN must be exactly 11 digits.');
-      return;
-    }
-    if (formData.nin.length !== 11) {
-      setError('NIN must be exactly 11 digits.');
-      return;
-    }
+    // if (formData.bvn.length !== 11) {
+    //   setError('BVN must be exactly 11 digits.');
+    //   return;
+    // }
+    // if (formData.nin.length !== 11) {
+    //   setError('NIN must be exactly 11 digits.');
+    //   return;
+    // }
 
     setLoading(true);
     try {
@@ -113,12 +113,12 @@ function IndividualForm() {
         fullName: formData.fullName,
         email: formData.email,
         password: formData.password,
-        bvn: formData.bvn,
-        nin: formData.nin,
-        bankAccount: formData.bankAccount,
-        bankCode: formData.bankCode,
-        phoneNumber: formData.phoneNumber,
-        dateOfBirth: formData.dateOfBirth,
+        // bvn: formData.bvn,
+        // nin: formData.nin,
+        // bankAccount: formData.bankAccount,
+        // bankCode: formData.bankCode,
+        // phoneNumber: formData.phoneNumber,
+        // dateOfBirth: formData.dateOfBirth,
       }) as any;
 
       setToken(token);
@@ -151,7 +151,7 @@ function IndividualForm() {
         </Field>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      {/* <div className="grid grid-cols-2 gap-3">
         <Field label="BVN (11 digits)" id="bvn">
           <Input id="bvn" type="text" inputMode="numeric" pattern="\d{11}" maxLength={11} placeholder="12345678901" required value={formData.bvn} onChange={set('bvn')} />
         </Field>
@@ -175,7 +175,7 @@ function IndividualForm() {
         <Field label="Bank Code" id="bankCode">
           <Input id="bankCode" type="text" placeholder="058" required value={formData.bankCode} onChange={set('bankCode')} />
         </Field>
-      </div>
+      </div> */}
 
       <SubmitButton loading={loading} label="Create Individual Account →" />
     </form>

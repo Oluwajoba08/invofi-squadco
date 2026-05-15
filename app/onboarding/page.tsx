@@ -1,12 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -20,6 +19,13 @@ import { Badge } from '@/components/ui/badge';
 
 function GlowOrb({ className }: { className?: string }) {
   return <div className={`absolute rounded-full blur-[100px] opacity-20 pointer-events-none ${className}`} />;
+}
+
+const inputCls =
+  'w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 transition-colors duration-200';
+
+function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
+  return <input {...props} className={inputCls} />;
 }
 
 function Field({ label, id, hint, children }: { label: string; id: string; hint?: string; children: React.ReactNode }) {
@@ -101,21 +107,26 @@ function StepWallet({ onNext }: { onNext: () => void }) {
   const { userId, userType } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [banks, setBanks] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     bvn: '',
     gender: '' as 'male' | 'female' | '',
     address: '',
     accountNumber: '',
+    bank: '',
   });
 
   const set = (key: keyof typeof formData) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setFormData((p) => ({ ...p, [key]: e.target.value }));
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+    e.preventDefault(); 
     setError('');
     if (!formData.gender) { setError('Please select your gender.'); return; }
     if (formData.bvn.length !== 11) { setError('BVN must be 11 digits.'); return; }
+    if (!formData.bank){ setError('Please select a bank.'); return; }
+    if (!formData.accountNumber){ setError('Please input bank account number.'); return; }
+    if (!formData.address){ setError('Please input address.'); return; }
 
     setLoading(true);
     try {
@@ -126,6 +137,7 @@ function StepWallet({ onNext }: { onNext: () => void }) {
         gender: formData.gender as 'male' | 'female',
         address: formData.address,
         accountNumber: formData.accountNumber,
+        bankCode: formData.bank,
       });
       onNext();
     } catch (err: any) {
@@ -134,6 +146,18 @@ function StepWallet({ onNext }: { onNext: () => void }) {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    async function fetchBanks() {
+      try {
+        const data = await ApiService.wallet.getBanks();
+        setBanks(data.data);
+      } catch (error) {
+        console.error('Error fetching banks:', error);
+      }
+    }
+    fetchBanks();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -158,7 +182,6 @@ function StepWallet({ onNext }: { onNext: () => void }) {
         <Input
           id="w-bvn" type="text" inputMode="numeric" maxLength={11} placeholder="12345678901" required
           value={formData.bvn} onChange={set('bvn')}
-          className="bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-violet-500 rounded-xl"
         />
       </Field>
 
@@ -178,15 +201,26 @@ function StepWallet({ onNext }: { onNext: () => void }) {
         <Input
           id="w-address" type="text" placeholder="14 Awolowo Road, Ikoyi, Lagos" required
           value={formData.address} onChange={set('address')}
-          className="bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-violet-500 rounded-xl"
         />
       </Field>
 
+      <Field label="Bank Name" id="w-code" hint="The bank linked to your BVN">
+        <Select value={formData.bank} onValueChange={(v) => setFormData((p) => ({ ...p, bank: v }))}>
+          <SelectTrigger className="bg-zinc-900 border-zinc-800 text-white rounded-xl focus:border-violet-500">
+            <SelectValue placeholder="Select bank" />
+          </SelectTrigger>
+          <SelectContent className="bg-zinc-900 border-zinc-800 text-white">
+            {banks.map((bank, i) => (
+              <SelectItem key={bank.code} value={bank.code}>{bank.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </Field>
+      
       <Field label="Bank Account Number" id="w-acct" hint="The account linked to your BVN">
         <Input
           id="w-acct" type="text" inputMode="numeric" maxLength={10} placeholder="0123456789" required
           value={formData.accountNumber} onChange={set('accountNumber')}
-          className="bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-violet-500 rounded-xl"
         />
       </Field>
 
