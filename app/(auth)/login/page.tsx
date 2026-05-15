@@ -25,7 +25,7 @@ function ErrorBanner({ message }: { message: string }) {
 
 const USER_TYPES: { value: UserType; label: string; icon: string; hint: string }[] = [
   { value: 'individual', label: 'Individual', icon: '◎', hint: 'Personal account' },
-  { value: 'vendor', label: 'Vendor', icon: '◈', hint: 'Business / supplier' },
+  // { value: 'vendor', label: 'Vendor', icon: '◈', hint: 'Business / supplier' },
   { value: 'institution', label: 'Institution', icon: '⬡', hint: 'Organisation / employer' },
 ];
 
@@ -95,13 +95,14 @@ export default function LoginPage() {
         displayName: data.user?.businessName || data.user?.fullName || data.user?.name || 'User',
       });
 
-      if (resolvedUserType === 'individual') {
-        router.push('/individual-dashboard');
-      } else if (resolvedUserType === 'vendor') {
-        router.push('/vendor-dashboard');
-      } else if (resolvedUserType === 'institution') {
-        router.push('/institution-dashboard');
-      }
+      // if (resolvedUserType === 'individual') {
+      //   router.push('/dashboard');
+      // } else if (resolvedUserType === 'vendor') {
+      //   router.push('/dashboard');
+      // } else if (resolvedUserType === 'institution') {
+      //   router.push('/dashboard');
+      // }
+      router.push('/dashboard');
     } catch (err: any) {
       setError(err?.message ?? 'Login failed. Please check your credentials and try again.');
     } finally {
@@ -196,7 +197,7 @@ export default function LoginPage() {
             {/* User type selector */}
             <div className="mb-7">
               <p className="text-xs font-medium text-zinc-500 uppercase tracking-wide mb-3">Sign in as</p>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {USER_TYPES.map((ut) => (
                   <button
                     key={ut.value}

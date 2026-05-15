@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 
-type Role = 'Individual' | 'Vendor' | 'Institution';
+type Role = 'Individual' | 'Institution'; // | 'Vendor';
 
 function Field({
   label,
@@ -122,7 +122,7 @@ function IndividualForm() {
       }) as any;
 
       setToken(token);
-      router.push('/dashboard');
+      router.push('/onboarding');
     } catch (err: any) {
       setError(err?.message ?? 'Registration failed. Please check your details and try again.');
     } finally {
@@ -227,7 +227,7 @@ function VendorForm() {
       }) as any;
 
       setToken(token);
-      router.push('/dashboard');
+      router.push('/onboarding');
     } catch (err: any) {
       setError(err?.message ?? 'Registration failed. Please check your details and try again.');
     } finally {
@@ -330,7 +330,7 @@ function InstitutionForm() {
       }) as any;
 
       setToken(token);
-      router.push('/dashboard');
+      router.push('/onboarding');
     } catch (err: any) {
       setError(err?.message ?? 'Registration failed. Please check your details and try again.');
     } finally {
@@ -387,7 +387,7 @@ function InstitutionForm() {
 
 const ROLE_META: Record<Role, { icon: string; desc: string }> = {
   Individual: { icon: '◎', desc: 'Protect your personal transfers with a verified identity.' },
-  Vendor: { icon: '◈', desc: 'Build trust with institutions by verifying your business.' },
+  // Vendor: { icon: '◈', desc: 'Build trust with institutions by verifying your business.' },
   Institution: { icon: '⬡', desc: 'Screen vendors and reduce fraud across your payments.' },
 };
 
@@ -399,9 +399,9 @@ export default function SignupPage() {
       <div className="min-h-screen flex" style={{ backgroundColor: '#06060e' }}>
 
         {/* ── Left panel (decorative) ── */}
-        <div className="hidden lg:flex flex-col justify-between w-[420px] shrink-0 border-r border-white/5 p-10 relative overflow-hidden">
+        <div className="hidden lg:flex flex-col justify-between w-105 shrink-0 border-r border-white/5 p-10 relative overflow-hidden">
           {/* bg glow */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-violet-700 blur-[120px] opacity-20 pointer-events-none" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-100 h-100 rounded-full bg-violet-700 blur-[120px] opacity-20 pointer-events-none" />
 
           <div className="relative z-10">
             <div className="flex items-center gap-2.5 mb-16">
@@ -467,7 +467,7 @@ export default function SignupPage() {
 
               {/* Role selector */}
               <div className="flex bg-white/5 border border-white/8 p-1 rounded-xl mb-8">
-                {(['Individual', 'Vendor', 'Institution'] as Role[]).map((r) => (
+                {(['Individual', 'Institution'] as Role[]).map((r) => (
                   <button
                     key={r}
                     type="button"
@@ -492,7 +492,7 @@ export default function SignupPage() {
                   transition={{ duration: 0.25 }}
                 >
                   {role === 'Individual' && <IndividualForm />}
-                  {role === 'Vendor' && <VendorForm />}
+                  {/* {role === 'Vendor' && <VendorForm />} */}
                   {role === 'Institution' && <InstitutionForm />}
                 </motion.div>
               </AnimatePresence>

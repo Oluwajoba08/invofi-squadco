@@ -11,9 +11,11 @@ import { RequestItem } from '@/components/dashboard/RequestItem';
 import { AuditLogItem } from '@/components/dashboard/AuditLogItem';
 import { FundWalletModal } from '@/components/dashboard/FundWalletModal';
 import { NewVerificationModal } from '@/components/dashboard/NewVerificationModal';
+import { VerifyTransferModal } from '@/components/dashboard/VerifyTransferModal';
 import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useDashboard } from '@/components/dashboard/DashboardContext';
+import { Search } from 'lucide-react';
 import { VerificationRequest, Wallet, Institution, InstitutionDashboardData, AuditLog } from '@/services/types';
 
 export default function InstitutionDashboard() {
@@ -26,6 +28,7 @@ export default function InstitutionDashboard() {
   const [activeTab, setActiveTab] = useState('recent');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNewRequestModalOpen, setIsNewRequestModalOpen] = useState(false);
+  const [isVerifyTransferOpen, setIsVerifyTransferOpen] = useState(false);
 
   const fetchDashboardData = useCallback(async () => {
     if (!userId) return;
@@ -140,16 +143,26 @@ export default function InstitutionDashboard() {
         <StatCard label="Blocked" value={stats?.blocked || 0} color="text-red-400" delay={0.3} />
       </div>
 
-      {/* --- Primary Action --- */}
-      <Button
-        onClick={() => setIsNewRequestModalOpen(true)}
-        className="w-full h-16 bg-[#06060e] hover:bg-white/5 border border-white/10 rounded-2xl text-white font-bold text-lg group transition-all duration-300"
-      >
-        <span className="flex items-center gap-3">
-          <Send className="h-5 w-5 text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          New verification request
-        </span>
-      </Button>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Button
+          onClick={() => setIsNewRequestModalOpen(true)}
+          className="w-full h-16 bg-[#06060e] hover:bg-white/5 border border-white/10 rounded-2xl text-white font-bold text-lg group transition-all duration-300"
+        >
+          <span className="flex items-center gap-3">
+            <Send className="h-5 w-5 text-violet-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            New verification request
+          </span>
+        </Button>
+
+        <Button
+          variant="outline"
+          onClick={() => setIsVerifyTransferOpen(true)}
+          className="w-full h-16 bg-[#06060e] hover:bg-white/5 border border-white/10 rounded-2xl text-white font-bold text-lg group transition-all duration-300 flex items-center justify-center gap-3"
+        >
+          <Search className="h-6 w-6 text-indigo-400 group-hover:scale-110 transition-transform" />
+          Verify Transfer
+        </Button>
+      </div>
 
       {/* --- Tabs & List --- */}
       <div className="space-y-6">
@@ -227,6 +240,10 @@ export default function InstitutionDashboard() {
         isOpen={isNewRequestModalOpen}
         onClose={() => setIsNewRequestModalOpen(false)}
         onSuccess={fetchDashboardData}
+      />
+      <VerifyTransferModal
+        isOpen={isVerifyTransferOpen}
+        onClose={() => setIsVerifyTransferOpen(false)}
       />
     </div>
   );

@@ -35,7 +35,7 @@ export function RequestItem({ request, index }: RequestItemProps) {
   const requestCode = (request as any).requestCode || (request as any).requestId || 'N/A';
 
   return (
-    <Link href={`/institution-dashboard/requests/${requestCode}`}>
+    <Link href={`/dashboard/requests/${requestCode}`}>
       <motion.div
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}

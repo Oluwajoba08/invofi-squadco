@@ -98,7 +98,7 @@ export default function RequestsPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-1">
           <button
-            onClick={() => router.push('/institution-dashboard')}
+            onClick={() => router.push('/dashboard')}
             className="flex items-center gap-2 text-white/40 hover:text-white transition-colors mb-2 group"
           >
             <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
@@ -123,7 +123,7 @@ export default function RequestsPage() {
         </div>
       </div>
 
-      <NewVerificationModal 
+      <NewVerificationModal
         isOpen={isNewRequestModalOpen} 
         onClose={() => setIsNewRequestModalOpen(false)} 
         onSuccess={() => {
@@ -220,7 +220,7 @@ export default function RequestsPage() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: i * 0.05 }}
                     className="hover:bg-white/2 transition-colors group cursor-pointer"
-                    onClick={() => router.push(`/institution-dashboard/requests/${req.requestCode}`)}
+                    onClick={() => router.push(`/dashboard/requests/${req.requestCode}`)}
                   >
                     <td className="p-6">
                       <span className="text-sm font-mono text-white/80 group-hover:text-violet-400 transition-colors font-bold">{req.requestCode}</span>
@@ -274,7 +274,7 @@ export default function RequestsPage() {
                         <Button
                           variant="ghost"
                           className="h-8 w-8 p-0 text-white/20 hover:text-white"
-                          onClick={() => router.push(`/institution-dashboard/requests/${req.requestCode}`)}
+                          onClick={() => router.push(`/dashboard/requests/${req.requestCode}`)}
                         >
                           <ArrowUpRight className="h-4 w-4" />
                         </Button>

@@ -8,6 +8,7 @@ import {
   Shield,
   ArrowLeftRight,
   AlertTriangle,
+  Search,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -17,6 +18,7 @@ import { VerificationItem } from '@/components/dashboard/VerificationItem';
 import { FundWalletModal } from '@/components/dashboard/FundWalletModal';
 import { IdentityVerificationModal } from '@/components/verification/IdentityVerificationModal';
 import { CreateSessionModal } from '@/components/dashboard/CreateSessionModal';
+import { VerifyTransferModal } from '@/components/dashboard/VerifyTransferModal';
 import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useDashboard } from '@/components/dashboard/DashboardContext';
@@ -31,6 +33,7 @@ export default function IndividualDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
   const [isCreateSessionOpen, setIsCreateSessionOpen] = useState(false);
+  const [isVerifyTransferOpen, setIsVerifyTransferOpen] = useState(false);
 
   const fetchDashboardData = useCallback(async () => {
     if (!userId) return;
@@ -126,6 +129,11 @@ export default function IndividualDashboard() {
         onSuccess={fetchDashboardData}
       />
 
+      <VerifyTransferModal
+        isOpen={isVerifyTransferOpen}
+        onClose={() => setIsVerifyTransferOpen(false)}
+      />
+
       {profile?.verificationStatus === 'review' && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -178,6 +186,15 @@ export default function IndividualDashboard() {
             Start a payment session
           </Button>
         </div>
+
+        <Button
+          variant="outline"
+          onClick={() => setIsVerifyTransferOpen(true)}
+          className="w-full h-16 bg-white/2 hover:bg-white/5 border-white/10 rounded-2xl text-white font-bold text-lg group transition-all duration-300 flex items-center justify-center gap-3"
+        >
+          <Search className="h-6 w-6 text-indigo-400 group-hover:scale-110 transition-transform" />
+          Verify Transfer
+        </Button>
       </div>
 
       <div className="space-y-6">

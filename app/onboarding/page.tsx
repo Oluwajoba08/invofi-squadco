@@ -348,13 +348,14 @@ export default function OnboardingPage() {
 
   function finish() {
     setOnboarded();
-    if (userType === 'individual') {
-      router.push('/individual-dashboard');
-    } else if (userType === 'vendor') {
-      router.push('/vendor-dashboard');
-    } else {
-      router.push('/institution-dashboard');
-    }
+    // if (userType === 'individual') {
+    //   router.push('/(individual)/dashboard');
+    // } else if (userType === 'vendor') {
+    //   router.push('/(vendor)/dashboard');
+    // } else {
+    //   router.push('/(institution)/dashboard');
+    // }
+    router.push('/dashboard');
   }
 
   const progress = ((step - 1) / (STEPS.length - 1)) * 100;

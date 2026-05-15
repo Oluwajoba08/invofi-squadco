@@ -47,7 +47,7 @@ export function SessionItem({ session, index }: SessionItemProps) {
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.2 + index * 0.05 }}
-      onClick={() => router.push(`/individual-dashboard/sessions/${session.sessionCode}`)}
+      onClick={() => router.push(`/dashboard/sessions/${session.sessionCode}`)}
       className="group flex items-center justify-between p-5 rounded-2xl border border-white/5 bg-white/2 hover:bg-white/4 cursor-pointer transition-all duration-300 active:scale-[0.99]"
     >
       <div className="flex flex-col gap-1">
