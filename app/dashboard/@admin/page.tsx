@@ -1,5 +1,5 @@
 export default function Page() {
   return (
-    <div>Vendor page</div>
-  );
+    <div>Admin page</div>
+  ); 
 }

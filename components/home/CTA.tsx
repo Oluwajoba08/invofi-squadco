@@ -26,11 +26,11 @@ export default function CTA() {
           </span>
         </h2>
         <p className="text-white/40 text-base mb-10 max-w-lg mx-auto leading-relaxed">
-          Whether you're an individual protecting your savings or a business protecting your bottom line — vproof is your layer of truth.
+          Whether you&apos;re an individual protecting your savings or a business protecting your bottom line — vproof is your layer of truth.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <button className="rounded-full bg-violet-600 px-10 py-4 text-[15px] font-semibold text-white hover:bg-violet-500 hover:shadow-[0_0_50px_rgba(139,92,246,0.6)] transition-all duration-300">
-            Get Verified — It's Free
+            Get Verified — It&apos;s Free
           </button>
           <button className="rounded-full border border-white/10 px-10 py-4 text-[15px] font-medium text-white/60 hover:border-white/20 hover:text-white transition-all duration-300">
             For Businesses →

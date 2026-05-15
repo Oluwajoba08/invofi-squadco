@@ -29,7 +29,7 @@ export default function VproofLanding() {
                 <span className="text-white font-bold text-[10px]">V</span>
               </div>
               <span className="text-white/60 text-sm" style={{ fontFamily: "'Syne', sans-serif" }}>
-                vproof — Nigeria's Verification Layer
+                vproof — Nigeria&apos;s Verification Layer
               </span>
             </div>
             <p className="text-white/20 text-xs font-mono">© 2025 vproof Technologies Ltd. All rights reserved.</p>
