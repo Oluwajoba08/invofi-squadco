@@ -7,10 +7,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
 type Role = 'Individual' | 'Vendor' | 'Institution';
 
-// ─── Shared UI primitives ─────────────────────────────────────────────────────
 function Field({
   label,
   id,
@@ -71,7 +69,6 @@ function ErrorBanner({ message }: { message: string }) {
   );
 }
 
-// ─── Individual Form ──────────────────────────────────────────────────────────
 function IndividualForm() {
   const router = useRouter();
   const { setToken } = useAuthStore();
@@ -125,7 +122,7 @@ function IndividualForm() {
       }) as any;
 
       setToken(token);
-      router.push('/dashboard');
+      router.push('/onboarding');
     } catch (err: any) {
       setError(err?.message ?? 'Registration failed. Please check your details and try again.');
     } finally {
@@ -185,7 +182,6 @@ function IndividualForm() {
   );
 }
 
-// ─── Vendor Form ──────────────────────────────────────────────────────────────
 function VendorForm() {
   const router = useRouter();
   const { setToken } = useAuthStore();
@@ -231,7 +227,7 @@ function VendorForm() {
       }) as any;
 
       setToken(token);
-      router.push('/dashboard');
+      router.push('/onboarding');
     } catch (err: any) {
       setError(err?.message ?? 'Registration failed. Please check your details and try again.');
     } finally {
@@ -291,7 +287,6 @@ function VendorForm() {
   );
 }
 
-// ─── Institution Form ─────────────────────────────────────────────────────────
 function InstitutionForm() {
   const router = useRouter();
   const { setToken } = useAuthStore();
@@ -335,7 +330,7 @@ function InstitutionForm() {
       }) as any;
 
       setToken(token);
-      router.push('/dashboard');
+      router.push('/onboarding');
     } catch (err: any) {
       setError(err?.message ?? 'Registration failed. Please check your details and try again.');
     } finally {
@@ -390,14 +385,12 @@ function InstitutionForm() {
   );
 }
 
-// ─── Role descriptions ────────────────────────────────────────────────────────
 const ROLE_META: Record<Role, { icon: string; desc: string }> = {
   Individual: { icon: '◎', desc: 'Protect your personal transfers with a verified identity.' },
-  Vendor:     { icon: '◈', desc: 'Build trust with institutions by verifying your business.' },
-  Institution:{ icon: '⬡', desc: 'Screen vendors and reduce fraud across your payments.' },
+  Vendor: { icon: '◈', desc: 'Build trust with institutions by verifying your business.' },
+  Institution: { icon: '⬡', desc: 'Screen vendors and reduce fraud across your payments.' },
 };
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
 export default function SignupPage() {
   const [role, setRole] = useState<Role>('Individual');
 
@@ -406,9 +399,9 @@ export default function SignupPage() {
       <div className="min-h-screen flex" style={{ backgroundColor: '#06060e' }}>
 
         {/* ── Left panel (decorative) ── */}
-        <div className="hidden lg:flex flex-col justify-between w-[420px] shrink-0 border-r border-white/5 p-10 relative overflow-hidden">
+        <div className="hidden lg:flex flex-col justify-between w-105 shrink-0 border-r border-white/5 p-10 relative overflow-hidden">
           {/* bg glow */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-violet-700 blur-[120px] opacity-20 pointer-events-none" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-100 h-100 rounded-full bg-violet-700 blur-[120px] opacity-20 pointer-events-none" />
 
           <div className="relative z-10">
             <div className="flex items-center gap-2.5 mb-16">
@@ -419,10 +412,10 @@ export default function SignupPage() {
             </div>
 
             <h2 className="text-4xl font-bold text-white leading-tight mb-4" style={{ fontFamily: 'Syne, sans-serif' }}>
-              Join Nigeria's
+              Join the Trust
               <br />
               <span style={{ background: 'linear-gradient(135deg,#a78bfa,#38bdf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                Trust Network
+                Network
               </span>
             </h2>
             <p className="text-white/40 text-sm leading-relaxed">
@@ -438,7 +431,7 @@ export default function SignupPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.35 }}
-              className="relative z-10 rounded-2xl border border-white/8 bg-white/[0.04] p-6 backdrop-blur-sm"
+              className="relative z-10 rounded-2xl border border-white/8 bg-white/4 p-6 backdrop-blur-sm"
             >
               <span className="text-2xl text-violet-400 mb-3 block">{ROLE_META[role].icon}</span>
               <p className="text-white font-semibold mb-1" style={{ fontFamily: 'Syne, sans-serif' }}>{role}</p>
@@ -479,11 +472,10 @@ export default function SignupPage() {
                     key={r}
                     type="button"
                     onClick={() => setRole(r)}
-                    className={`flex-1 py-2.5 text-sm rounded-lg font-medium transition-all duration-200 ${
-                      role === r
-                        ? 'bg-violet-600 text-white shadow-lg'
-                        : 'text-white/40 hover:text-white/70'
-                    }`}
+                    className={`flex-1 py-2.5 text-sm rounded-lg font-medium transition-all duration-200 ${role === r
+                      ? 'bg-violet-600 text-white shadow-lg'
+                      : 'text-white/40 hover:text-white/70'
+                      }`}
                   >
                     {r}
                   </button>
@@ -499,8 +491,8 @@ export default function SignupPage() {
                   exit={{ opacity: 0, x: -12 }}
                   transition={{ duration: 0.25 }}
                 >
-                  {role === 'Individual'  && <IndividualForm />}
-                  {role === 'Vendor'      && <VendorForm />}
+                  {role === 'Individual' && <IndividualForm />}
+                  {role === 'Vendor' && <VendorForm />}
                   {role === 'Institution' && <InstitutionForm />}
                 </motion.div>
               </AnimatePresence>

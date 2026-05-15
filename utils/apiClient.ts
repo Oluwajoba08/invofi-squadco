@@ -1,53 +1,28 @@
-import { getAuthToken } from './auth';
+import axiosInstance from '@/lib/axios';
 
-interface FetchOptions extends RequestInit {
+interface FetchOptions {
   data?: any;
-  params?: Record<string, string>;
+  params?: Record<string, any>;
+  method?: string;
+  headers?: Record<string, string>;
+  [key: string]: any;
 }
 
 export async function apiClient<T>(
   endpoint: string,
   { data, params, ...customConfig }: FetchOptions = {}
 ): Promise<T> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
-  const token = getAuthToken();
-
-  const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
-  
-  // 1. Initialize headers as a Record to allow string indexing
-  const headers: Record<string, string> = {
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-
-  // 2. Handle manual header overrides from customConfig
-  if (customConfig.headers) {
-    const overrideHeaders = customConfig.headers as Record<string, string>;
-    Object.assign(headers, overrideHeaders);
-  }
-
-  // 3. Logic for Content-Type
-  if (data && !(data instanceof FormData)) {
-    headers['Content-Type'] = 'application/json';
-  }
-
-  const config: RequestInit = {
-    method: customConfig.method || (data ? 'POST' : 'GET'),
-    ...customConfig,
-    headers, // TypeScript now accepts this as it satisfies HeadersInit
-    body: data instanceof FormData ? data : data ? JSON.stringify(data) : undefined,
-  };
-
   try {
-    const response = await fetch(`${baseUrl}${endpoint}${queryString}`, config);
+    const response = await axiosInstance({
+      url: endpoint,
+      method: customConfig.method || (data ? 'POST' : 'GET'),
+      data,
+      params,
+      ...customConfig,
+    });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'API Error');
-    }
-
-    return response.status === 204 ? ({} as T) : await response.json();
+    return response.data;
   } catch (error) {
-    console.error(`[API Error ${endpoint}]:`, error);
     throw error;
   }
 }
