@@ -28,15 +28,15 @@ export function Sidebar() {
 
   const navItems = userType === 'individual' 
     ? [
-        { label: 'Home', icon: Home, href: '/individual-dashboard' },
-        { label: 'Wallet', icon: Wallet, href: '/individual-dashboard/wallet' },
-        { label: 'Settings', icon: Settings, href: '/individual-dashboard/settings' },
+        { label: 'Home', icon: Home, href: '/dashboard' },
+        { label: 'Wallet', icon: Wallet, href: '/dashboard/wallet' },
+        { label: 'Settings', icon: Settings, href: '/dashboard/settings' },
       ]
     : [
-        { label: 'Home', icon: Home, href: '/institution-dashboard' },
-        { label: 'Requests', icon: ShieldCheck, href: '/institution-dashboard/requests' },
-        { label: 'Wallet', icon: Wallet, href: '/institution-dashboard/wallet' },
-        { label: 'Settings', icon: Settings, href: '/institution-dashboard/settings' },
+        { label: 'Home', icon: Home, href: '/dashboard' },
+        { label: 'Requests', icon: ShieldCheck, href: '/dashboard/requests' },
+        { label: 'Wallet', icon: Wallet, href: '/dashboard/wallet' },
+        { label: 'Settings', icon: Settings, href: '/dashboard/settings' },
       ];
 
   return (

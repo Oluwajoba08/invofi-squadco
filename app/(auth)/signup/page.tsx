@@ -122,7 +122,7 @@ function IndividualForm() {
       }) as any;
 
       setToken(token);
-      router.push('/dashboard');
+      router.push('/onboarding');
     } catch (err: any) {
       setError(err?.message ?? 'Registration failed. Please check your details and try again.');
     } finally {
@@ -227,7 +227,7 @@ function VendorForm() {
       }) as any;
 
       setToken(token);
-      router.push('/dashboard');
+      router.push('/onboarding');
     } catch (err: any) {
       setError(err?.message ?? 'Registration failed. Please check your details and try again.');
     } finally {
@@ -330,7 +330,7 @@ function InstitutionForm() {
       }) as any;
 
       setToken(token);
-      router.push('/dashboard');
+      router.push('/onboarding');
     } catch (err: any) {
       setError(err?.message ?? 'Registration failed. Please check your details and try again.');
     } finally {
@@ -399,9 +399,9 @@ export default function SignupPage() {
       <div className="min-h-screen flex" style={{ backgroundColor: '#06060e' }}>
 
         {/* ── Left panel (decorative) ── */}
-        <div className="hidden lg:flex flex-col justify-between w-[420px] shrink-0 border-r border-white/5 p-10 relative overflow-hidden">
+        <div className="hidden lg:flex flex-col justify-between w-105 shrink-0 border-r border-white/5 p-10 relative overflow-hidden">
           {/* bg glow */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-violet-700 blur-[120px] opacity-20 pointer-events-none" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-100 h-100 rounded-full bg-violet-700 blur-[120px] opacity-20 pointer-events-none" />
 
           <div className="relative z-10">
             <div className="flex items-center gap-2.5 mb-16">

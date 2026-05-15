@@ -88,7 +88,7 @@ export default function InstitutionSettingsPage() {
       {/* --- Header --- */}
       <div className="space-y-1">
         <button
-          onClick={() => router.push('/institution-dashboard')}
+          onClick={() => router.push('/dashboard')}
           className="flex items-center gap-2 text-white/40 hover:text-white transition-colors mb-2 group"
         >
           <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
