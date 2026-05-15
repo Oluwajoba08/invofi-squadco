@@ -29,6 +29,7 @@ export function Sidebar({ isMobileDrawer = false }: { isMobileDrawer?: boolean }
   const navItems = userType === 'individual' 
     ? [
         { label: 'Home', icon: Home, href: '/dashboard' },
+        { label: 'Verification', icon: ShieldCheck, href: '/dashboard/verification' },
         { label: 'Wallet', icon: Wallet, href: '/dashboard/wallet' },
         { label: 'Settings', icon: Settings, href: '/dashboard/settings' },
       ]
