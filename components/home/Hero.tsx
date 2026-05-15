@@ -58,7 +58,7 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="max-w-2xl text-sm md:text-[17px] text-white/50 leading-relaxed font-light mb-10"
           >
-            Vproof is Nigeria's verification layer — every sender sees a recipient's vScore™ before a naira leaves their account.
+            Vproof is Nigeria&apos;s verification layer — every sender sees a recipient&apos;s vScore™ before a naira leaves their account.
             End transfer fraud for good.
           </motion.p>
 

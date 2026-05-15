@@ -68,7 +68,7 @@ export default function Testimonials() {
               transition={{ duration: 0.5, delay: i * 0.12 }}
               className="rounded-2xl border border-white/8 bg-white/3 p-7 backdrop-blur-sm"
             >
-              <p className="text-white/50 text-sm leading-relaxed mb-6 italic">"{t.quote}"</p>
+              <p className="text-white/50 text-sm leading-relaxed mb-6 italic">&quot;{t.quote}&quot;</p>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-white font-semibold text-sm">{t.name}</p>

@@ -16,7 +16,7 @@ export default function Layout({
   const { userType } = useAuthStore();
   return (
     <>
-      userType === 'individual' ? individual : userType === 'institution' ? institution : userType === 'vendor' ? vendor : userType === 'admin' ? admin : <div>Unauthorized</div>
+      {userType === "individual" ? individual : userType === "institution" ? institution : userType === "vendor" ? vendor : userType === "admin" ? admin : <div>Unauthorized</div>}
       {children}
     </>
   )
