@@ -178,49 +178,53 @@ function StepWallet({ onNext }: { onNext: () => void }) {
         )}
       </AnimatePresence>
 
-      <Field label="BVN" id="w-bvn" hint="11-digit Bank Verification Number">
-        <Input
-          id="w-bvn" type="text" inputMode="numeric" maxLength={11} placeholder="12345678901" required
-          value={formData.bvn} onChange={set('bvn')}
-        />
-      </Field>
+      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-3">
+        <Field label="Bank Name" id="w-code" hint="The bank linked to your BVN">
+          <Select value={formData.bank} onValueChange={(v) => setFormData((p) => ({ ...p, bank: v }))}>
+            <SelectTrigger className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 transition-colors duration-200">
+              <SelectValue placeholder="Select bank" />
+            </SelectTrigger>
+            <SelectContent className="bg-zinc-900 border-zinc-800 text-white">
+              {banks.map((bank, i) => (
+                <SelectItem key={bank.code} value={bank.code}>{bank.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
+        
+        <Field label="Bank Account Number" id="w-acct" hint="The account linked to your BVN">
+          <Input
+            id="w-acct" type="text" inputMode="numeric" maxLength={10} placeholder="0123456789" required
+            value={formData.accountNumber} onChange={set('accountNumber')}
+          />
+        </Field>
+      </div>
 
-      <Field label="Gender" id="w-gender">
-        <Select onValueChange={(v) => setFormData((p) => ({ ...p, gender: v as 'male' | 'female' }))}>
-          <SelectTrigger className="bg-zinc-900 border-zinc-800 text-white rounded-xl focus:border-violet-500">
-            <SelectValue placeholder="Select gender" />
-          </SelectTrigger>
-          <SelectContent className="bg-zinc-900 border-zinc-800 text-white">
-            <SelectItem value="male">Male</SelectItem>
-            <SelectItem value="female">Female</SelectItem>
-          </SelectContent>
-        </Select>
-      </Field>
+      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-3">
+        <Field label="BVN" id="w-bvn" hint="11-digit Bank Verification Number">
+          <Input
+            id="w-bvn" type="text" inputMode="numeric" maxLength={11} placeholder="12345678901" required
+            value={formData.bvn} onChange={set('bvn')}
+          />
+        </Field>
+
+        <Field label="Gender" id="w-gender">
+          <Select onValueChange={(v) => setFormData((p) => ({ ...p, gender: v as 'male' | 'female' }))}>
+            <SelectTrigger className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 transition-colors duration-200">
+              <SelectValue placeholder="Select gender" />
+            </SelectTrigger>
+            <SelectContent className="bg-zinc-900 border-zinc-800 text-white">
+              <SelectItem value="male">Male</SelectItem>
+              <SelectItem value="female">Female</SelectItem>
+            </SelectContent>
+          </Select>
+        </Field>
+      </div>
 
       <Field label="Residential Address" id="w-address">
         <Input
           id="w-address" type="text" placeholder="14 Awolowo Road, Ikoyi, Lagos" required
           value={formData.address} onChange={set('address')}
-        />
-      </Field>
-
-      <Field label="Bank Name" id="w-code" hint="The bank linked to your BVN">
-        <Select value={formData.bank} onValueChange={(v) => setFormData((p) => ({ ...p, bank: v }))}>
-          <SelectTrigger className="bg-zinc-900 border-zinc-800 text-white rounded-xl focus:border-violet-500">
-            <SelectValue placeholder="Select bank" />
-          </SelectTrigger>
-          <SelectContent className="bg-zinc-900 border-zinc-800 text-white">
-            {banks.map((bank, i) => (
-              <SelectItem key={bank.code} value={bank.code}>{bank.name}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </Field>
-      
-      <Field label="Bank Account Number" id="w-acct" hint="The account linked to your BVN">
-        <Input
-          id="w-acct" type="text" inputMode="numeric" maxLength={10} placeholder="0123456789" required
-          value={formData.accountNumber} onChange={set('accountNumber')}
         />
       </Field>
 
