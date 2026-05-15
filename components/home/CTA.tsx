@@ -2,8 +2,10 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import GlowOrb from "./ui/GlowOrb";
+import { useRouter } from "next/navigation";
 
 export default function CTA() {
+  const router = useRouter()
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -29,10 +31,10 @@ export default function CTA() {
           Whether you&apos;re an individual protecting your savings or a business protecting your bottom line — vproof is your layer of truth.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <button className="rounded-full bg-violet-600 px-10 py-4 text-[15px] font-semibold text-white hover:bg-violet-500 hover:shadow-[0_0_50px_rgba(139,92,246,0.6)] transition-all duration-300">
+          <button onClick={() => router.push("/signup")} className="rounded-full bg-violet-600 px-10 py-4 text-[15px] font-semibold text-white hover:bg-violet-500 hover:shadow-[0_0_50px_rgba(139,92,246,0.6)] transition-all duration-300">
             Get Verified — It&apos;s Free
           </button>
-          <button className="rounded-full border border-white/10 px-10 py-4 text-[15px] font-medium text-white/60 hover:border-white/20 hover:text-white transition-all duration-300">
+          <button onClick={() => router.push("/signup")} className="rounded-full border border-white/10 px-10 py-4 text-[15px] font-medium text-white/60 hover:border-white/20 hover:text-white transition-all duration-300">
             For Businesses →
           </button>
         </div>

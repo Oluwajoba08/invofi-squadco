@@ -3,8 +3,10 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import GlowOrb from "./ui/GlowOrb";
 import ScoreRing from "./ui/ScoreRing";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+  const router = useRouter()
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
@@ -69,10 +71,10 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.45 }}
             className="flex flex-wrap items-center justify-center gap-4"
           >
-            <button className="group relative overflow-hidden rounded-full bg-violet-600 px-8 py-3.5 text-[14px] font-semibold text-white transition-all duration-300 hover:bg-violet-500 hover:shadow-[0_0_40px_rgba(139,92,246,0.5)]">
+            <button onClick={() => router.push("/signup")} className="group relative overflow-hidden rounded-full bg-violet-600 px-8 py-3.5 text-[14px] font-semibold text-white transition-all duration-300 hover:bg-violet-500 hover:shadow-[0_0_40px_rgba(139,92,246,0.5)]">
               <span className="relative z-10">Get Verified Free →</span>
             </button>
-            <button className="rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-[14px] font-medium text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10">
+            <button onClick={() => router.push("/signup")} className="rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-[14px] font-medium text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10">
               See How It Works
             </button>
           </motion.div>
