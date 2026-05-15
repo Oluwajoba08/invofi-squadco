@@ -140,7 +140,7 @@ export default function SessionDetailsPage({ params }: { params: Promise<{ sessi
         <div className="relative z-10 space-y-6">
           <div className="space-y-1">
             <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em]">Transaction Value</p>
-            <h1 className="text-6xl font-black text-white tracking-tighter" style={{ fontFamily: 'Syne, sans-serif' }}>
+            <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter" style={{ fontFamily: 'Syne, sans-serif' }}>
               ₦{session.amount?.toLocaleString()}
             </h1>
           </div>

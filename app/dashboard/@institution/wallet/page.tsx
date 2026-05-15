@@ -136,7 +136,7 @@ export default function InstitutionWalletPage() {
                     <ShieldCheck className="h-4 w-4 text-white/60" />
                     <p className="text-[10px] font-bold text-white/60 uppercase tracking-[0.2em]">Verified Escrow Balance</p>
                   </div>
-                  <h2 className="text-6xl font-black text-white tracking-tighter tabular-nums" style={{ fontFamily: 'Syne, sans-serif' }}>
+                  <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter tabular-nums" style={{ fontFamily: 'Syne, sans-serif' }}>
                     ₦{wallet.balance?.toLocaleString() || '0.00'}
                   </h2>
                 </div>
