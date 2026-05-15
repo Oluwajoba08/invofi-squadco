@@ -464,7 +464,7 @@ export default function RequestDetailsPage({ params }: { params: Promise<{ reque
               </div>
 
               <div className="flex items-baseline gap-2">
-                <span className="text-6xl font-bold tabular-nums">{request.trustScore || 0}</span>
+                <span className="text-4xl md:text-6xl font-bold tabular-nums">{request.trustScore || 0}</span>
                 <span className="text-xl font-medium text-white/60">/ 100</span>
               </div>
 

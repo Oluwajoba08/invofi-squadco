@@ -67,7 +67,7 @@ export default function WalletPage() {
               <div className="h-1 w-1 rounded-full bg-white/40" />
               <p className="text-[10px] text-white/40 font-mono uppercase">Secure Escrow</p>
             </div>
-            <h2 className="text-6xl font-black text-white tracking-tighter" style={{ fontFamily: 'Syne, sans-serif' }}>
+            <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter" style={{ fontFamily: 'Syne, sans-serif' }}>
               ₦{wallet?.balance?.toLocaleString() || '0.00'}
             </h2>
           </div>
