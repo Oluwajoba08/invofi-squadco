@@ -2,16 +2,16 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Wallet as WalletIcon, 
-  ArrowLeft, 
-  Plus, 
-  ArrowUpRight, 
-  Copy, 
-  Check, 
-  CreditCard, 
-  Building2, 
-  User, 
+import {
+  Wallet as WalletIcon,
+  ArrowLeft,
+  Plus,
+  ArrowUpRight,
+  Copy,
+  Check,
+  CreditCard,
+  Building2,
+  User,
   Clock,
   ExternalLink,
   ShieldCheck,
@@ -51,7 +51,7 @@ export default function InstitutionWalletPage() {
   }, [userId]);
 
   useEffect(() => {
-    fetchWalletData();
+    Promise.resolve().then(() => fetchWalletData());
   }, [fetchWalletData]);
 
   const handleCopy = (text: string, id: string) => {
@@ -81,9 +81,9 @@ export default function InstitutionWalletPage() {
             Your institution wallet hasn&apos;t been initialized yet. Please contact support if you believe this is an error.
           </p>
         </div>
-        <Button 
+        <Button
           onClick={() => router.push('/institution-dashboard')}
-          variant="outline" 
+          variant="outline"
           className="rounded-2xl border-white/10 text-white hover:bg-white/5"
         >
           Back to Dashboard
@@ -109,7 +109,7 @@ export default function InstitutionWalletPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button 
+          <Button
             onClick={() => setIsFundModalOpen(true)}
             className="bg-violet-600 hover:bg-violet-500 text-white rounded-2xl px-6 h-14 font-bold shadow-lg shadow-violet-600/20 transition-all active:scale-95"
           >
@@ -122,7 +122,7 @@ export default function InstitutionWalletPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* --- Main Wallet Card --- */}
         <div className="lg:col-span-2 space-y-8">
-          <motion.section 
+          <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="relative group overflow-hidden rounded-[2.5rem] bg-linear-to-br from-emerald-600 to-teal-700 p-10 shadow-[0_30px_60px_rgba(16,185,129,0.25)]"
@@ -157,7 +157,7 @@ export default function InstitutionWalletPage() {
                   <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Funding Account Number</p>
                   <div className="flex items-center justify-between">
                     <p className="text-xl font-mono font-bold text-white tracking-wider">{wallet.accountNumber || 'Pending...'}</p>
-                    <button 
+                    <button
                       onClick={() => handleCopy(wallet.accountNumber, 'acc')}
                       className="h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
                     >
@@ -194,8 +194,8 @@ export default function InstitutionWalletPage() {
             <div className="space-y-4">
               {wallet.recentFundings && wallet.recentFundings.length > 0 ? (
                 wallet.recentFundings.map((tx: any, i: number) => (
-                  <div 
-                    key={i} 
+                  <div
+                    key={i}
                     className="flex items-center justify-between p-5 rounded-2xl border border-white/5 bg-white/1 hover:bg-white/2 transition-colors group"
                   >
                     <div className="flex items-center gap-4">
@@ -232,7 +232,7 @@ export default function InstitutionWalletPage() {
           {/* Settlement Details */}
           <section className="bg-[#0a0a0f] border border-white/10 rounded-[2.5rem] p-8 space-y-6">
             <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/20">Settlement Configuration</h3>
-            
+
             <div className="space-y-6">
               <div className="space-y-2">
                 <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Settlement Account</p>
@@ -295,10 +295,11 @@ export default function InstitutionWalletPage() {
       </div>
 
       {/* --- Modals --- */}
-      <FundWalletModal 
-        isOpen={isFundModalOpen} 
-        onClose={() => setIsFundModalOpen(false)} 
+      <FundWalletModal
+        isOpen={isFundModalOpen}
+        onClose={() => setIsFundModalOpen(false)}
         wallet={wallet}
+        onSuccess={fetchWalletData}
       />
     </div>
   );

@@ -128,6 +128,9 @@ export const ApiService = {
 
     getBanks: () =>
       apiClient<{ success: boolean; data: Bank[] }>('/payments/banks'),
+
+    simulateFunding: (data: { accountNumber: string; amount: number }) =>
+      apiClient<any>('/wallets/simulate-funding', { method: 'POST', data }),
   },
 
   payments: {

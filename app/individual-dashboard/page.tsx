@@ -110,6 +110,7 @@ export default function IndividualDashboard() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         wallet={transferWallet}
+        onSuccess={fetchDashboardData}
       />
 
       <IdentityVerificationModal

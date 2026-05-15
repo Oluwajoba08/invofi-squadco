@@ -130,6 +130,7 @@ export default function InstitutionDashboard() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         wallet={transferWallet}
+        onSuccess={fetchDashboardData}
       />
 
       {/* --- Stats Row --- */}
