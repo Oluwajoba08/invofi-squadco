@@ -66,7 +66,7 @@ export function FundWalletModal({ isOpen, onClose, wallet, onSuccess }: FundWall
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md bg-[#0b0b14] border-white/5 text-white rounded-[2rem]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold tracking-tight text-center" style={{ fontFamily: 'Syne, sans-serif' }}>
+          <DialogTitle className="text-xl md:text-2xl font-bold tracking-tight text-center" style={{ fontFamily: 'Syne, sans-serif' }}>
             Simulate Wallet Funding
           </DialogTitle>
           <DialogDescription className="text-white/40 text-center">

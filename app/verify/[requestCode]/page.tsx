@@ -129,7 +129,7 @@ export default function VerificationPublicPage({ params }: { params: Promise<{ r
           <ShieldAlert className="h-10 w-10 text-red-400" />
         </div>
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-white">Invalid Request</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-white">Invalid Request</h1>
           <p className="text-white/40 max-w-xs mx-auto">This verification link has expired or the request code is incorrect.</p>
         </div>
         <Button onClick={() => router.push('/')} variant="outline" className="rounded-2xl border-white/10 text-white">
@@ -186,7 +186,7 @@ export default function VerificationPublicPage({ params }: { params: Promise<{ r
                     <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">Escrow Amount</p>
                     <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 px-3 py-1 rounded-lg text-[10px] font-bold uppercase">Pending Release</Badge>
                   </div>
-                  <h2 className="text-5xl font-black text-white tracking-tighter" style={{ fontFamily: 'Syne, sans-serif' }}>
+                  <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter" style={{ fontFamily: 'Syne, sans-serif' }}>
                     ₦{request.paymentAmount?.toLocaleString()}
                   </h2>
                   <div className="pt-4 border-t border-white/5 space-y-2">
@@ -220,7 +220,7 @@ export default function VerificationPublicPage({ params }: { params: Promise<{ r
               className="w-full space-y-8"
             >
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold">Quick Identity Check</h2>
+                <h2 className="text-xl md:text-2xl font-bold">Quick Identity Check</h2>
                 <p className="text-white/40 text-sm">Tell us who you are to begin the secure submission.</p>
               </div>
 
@@ -277,7 +277,7 @@ export default function VerificationPublicPage({ params }: { params: Promise<{ r
               className="w-full space-y-8 pb-20"
             >
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold">Business Verification</h2>
+                <h2 className="text-xl md:text-2xl font-bold">Business Verification</h2>
                 <p className="text-white/40 text-sm">Fill in your business details for AI cross-referencing.</p>
               </div>
 

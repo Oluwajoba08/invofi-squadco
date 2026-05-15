@@ -117,7 +117,7 @@ export function VerifyTransferModal({ isOpen, onClose, verificationId }: VerifyT
           <DialogHeader className="mb-8">
             <div className="flex items-center justify-between">
               <div>
-                <DialogTitle className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Syne, sans-serif' }}>
+                <DialogTitle className="text-xl md:text-2xl font-bold tracking-tight" style={{ fontFamily: 'Syne, sans-serif' }}>
                   Verify Transfer
                 </DialogTitle>
                 <DialogDescription className="text-white/40 mt-1">

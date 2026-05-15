@@ -81,7 +81,7 @@ export default function SessionDetailsPage({ params }: { params: Promise<{ sessi
         <div className="h-20 w-20 rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20">
           <ShieldAlert className="h-10 w-10 text-red-400" />
         </div>
-        <h1 className="text-2xl font-bold text-white">Session Not Found</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-white">Session Not Found</h1>
         <Button onClick={() => router.push("/dashboard")} variant="outline" className="rounded-2xl border-white/10 text-white">
           <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
         </Button>

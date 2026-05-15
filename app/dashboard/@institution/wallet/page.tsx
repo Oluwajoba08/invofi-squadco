@@ -123,7 +123,7 @@ export default function InstitutionWalletPage() {
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative group overflow-hidden rounded-[2.5rem] bg-linear-to-br from-emerald-600 to-teal-700 p-10 shadow-[0_30px_60px_rgba(16,185,129,0.25)]"
+            className="relative group overflow-hidden rounded-[2.5rem] bg-linear-to-br from-emerald-600 to-teal-700 p-4 md:p-10 shadow-[0_30px_60px_rgba(16,185,129,0.25)]"
           >
             <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity">
               <WalletIcon size={180} />

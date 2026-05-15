@@ -115,7 +115,7 @@ export default function RequestDetailsPage({ params }: { params: Promise<{ reque
         <div className="h-20 w-20 rounded-full bg-red-500/10 flex items-center justify-center mb-6">
           <AlertCircle className="h-10 w-10 text-red-400" />
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">Access Denied</h2>
+        <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Access Denied</h2>
         <p className="text-white/40 mb-8 max-w-md">{error || 'The requested verification packet is unavailable or has been purged from active memory.'}</p>
         <Button
           onClick={() => router.back()}
@@ -208,7 +208,7 @@ export default function RequestDetailsPage({ params }: { params: Promise<{ reque
                   </div>
 
                   <div className="p-8 text-center space-y-4">
-                    <h3 className="text-2xl font-bold text-white">Manual Verification Warning</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-white">Manual Verification Warning</h3>
                     <p className="text-white/40 text-sm leading-relaxed">
                       By proceeding with manual verification, you are overriding the AI security protocols. This action assumes all liability for the vendor&apos;s authenticity and payment security.
                     </p>
@@ -284,7 +284,7 @@ export default function RequestDetailsPage({ params }: { params: Promise<{ reque
                   </div>
 
                   <div className="p-8 text-center space-y-4">
-                    <h3 className="text-2xl font-bold text-white">Release Escrow Funds</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-white">Release Escrow Funds</h3>
                     <p className="text-white/40 text-sm leading-relaxed">
                       You are about to release <span className="text-white font-bold">₦{request.paymentAmount?.toLocaleString()}</span> to <span className="text-white font-bold">{request.vendorName}</span>. This action is irreversible.
                     </p>
