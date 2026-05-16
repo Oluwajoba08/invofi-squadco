@@ -150,7 +150,7 @@ function StepWallet({ onNext }: { onNext: () => void }) {
         accountNumber: formData.accountNumber,
         bankCode: formData.bank,
         dateOfBirth: formatToDDMMYYYY(formData.dateOfBirth),
-        nin: formData.nin,
+        ninNumber: formData.nin,
         phoneNumber: formData.phoneNumber,
       });
       onNext();
@@ -264,12 +264,12 @@ function StepWallet({ onNext }: { onNext: () => void }) {
         </Field>
       </div>
 
-      <Field label="Phone Number" id="w-phoneNumber">
+      {/* <Field label="Phone Number" id="w-phoneNumber">
         <Input
           id="w-phoneNumber" type="text" placeholder="07000000000" required
           value={formData.phoneNumber} onChange={set('phoneNumber')}
         />
-      </Field>
+      </Field> */}
 
       <Field label="Residential Address" id="w-address">
         <Input

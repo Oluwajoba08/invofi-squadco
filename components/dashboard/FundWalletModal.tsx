@@ -41,8 +41,8 @@ export function FundWalletModal({ isOpen, onClose, wallet, onSuccess }: FundWall
     }
 
     if (!wallet?.accountNumber) {
-        toast.error('Virtual account number not found');
-        return;
+      toast.error('Virtual account number not found');
+      return;
     }
 
     try {
