@@ -91,7 +91,6 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
       if (response.success) {
         setSessionStatus(response.data);
 
-        // Handle auto-transitions based on status
         if (response.data.status === 'awaiting_both_consent' ||
           response.data.status === 'awaiting_initiator_consent' ||
           response.data.status === 'awaiting_recipient_consent') {

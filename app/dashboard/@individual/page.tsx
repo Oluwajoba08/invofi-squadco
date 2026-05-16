@@ -135,7 +135,7 @@ export default function IndividualDashboard() {
         onClose={() => setIsVerifyTransferOpen(false)}
       />
 
-      {profile?.verificationStatus === 'review' && (
+      {vScore && vScore < 70 && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -146,7 +146,7 @@ export default function IndividualDashboard() {
         </motion.div>
       )}
 
-      {!profile?.trustScore && !vScore && (
+      {vScore && vScore < 70 && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

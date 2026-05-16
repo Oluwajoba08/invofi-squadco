@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Building, User } from 'lucide-react';
+import { toast } from 'sonner';
 
 type Role = 'Individual' | 'Institution'; // | 'Vendor';
 
