@@ -87,7 +87,9 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
   const pollStatus = useCallback(async () => {
     if (!guestToken && !session) return;
     try {
-      const response = await ApiService.sessions.getStatus(sessionCode);
+      const response = await ApiService.sessions.getStatus(sessionCode, {
+        guestToken: guestToken || undefined
+      });
       if (response.success) {
         setSessionStatus(response.data);
 

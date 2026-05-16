@@ -172,8 +172,8 @@ export const ApiService = {
     create: (data: { initiatorProfileId: string; recipientEmail?: string; recipientPhone?: string; amount: number; description: string }) =>
       apiClient<{ success: boolean; data: any }>('/sessions', { method: 'POST', data }),
 
-    getStatus: (sessionCode: string) =>
-      apiClient<{ success: boolean; data: any }>(`/sessions/${sessionCode}/status`),
+    getStatus: (sessionCode: string, params?: { profileId?: string; guestToken?: string }) =>
+      apiClient<{ success: boolean; data: any }>(`/sessions/${sessionCode}/status`, { params }),
 
     getDetails: (sessionCode: string) =>
       apiClient<{ success: boolean; data: any }>(`/sessions/${sessionCode}/details`),
