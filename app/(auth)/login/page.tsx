@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 import { UserType } from '@/services/types';
+import { Building, UserCircle } from 'lucide-react';
 
 const inputCls =
   'w-full bg-zinc-900/80 border border-zinc-800 rounded-xl px-4 py-3.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 transition-colors duration-200';
@@ -23,10 +24,10 @@ function ErrorBanner({ message }: { message: string }) {
   );
 }
 
-const USER_TYPES: { value: UserType; label: string; icon: string; hint: string }[] = [
-  { value: 'individual', label: 'Individual', icon: '◎', hint: 'Personal account' },
+const USER_TYPES: { value: UserType; label: string; icon: ReactNode; hint: string }[] = [
+  { value: 'individual', label: 'Individual', icon: <UserCircle />, hint: 'Personal account' },
   // { value: 'vendor', label: 'Vendor', icon: '◈', hint: 'Business / supplier' },
-  { value: 'institution', label: 'Institution', icon: '⬡', hint: 'Organisation / employer' },
+  { value: 'institution', label: 'Institution', icon: <Building />, hint: 'Organisation / employer' },
 ];
 
 function ScoreRingDeco() {

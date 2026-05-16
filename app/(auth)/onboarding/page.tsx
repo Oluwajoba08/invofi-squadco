@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ApiService } from '@/services/api';
@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
+import { AlertTriangle, CheckCircle, FileLock, Handshake, Percent, Shield, Wallet } from 'lucide-react';
 
 function GlowOrb({ className }: { className?: string }) {
   return <div className={`absolute rounded-full blur-[100px] opacity-20 pointer-events-none ${className}`} />;
@@ -41,27 +42,27 @@ function Field({ label, id, hint, children }: { label: string; id: string; hint?
 }
 
 const STEPS = [
-  { id: 1, icon: '◎', label: 'Welcome', title: 'Welcome to vproof' },
-  { id: 2, icon: '⬡', label: 'Wallet', title: 'Set Up Your Wallet' },
-  { id: 3, icon: '◈', label: 'Documents', title: 'Your Verification Roadmap' },
-  { id: 4, icon: '▣', label: 'Done', title: 'You\'re Protected' },
+  { id: 1, icon: <Handshake size={24} />, label: 'Welcome', title: 'Welcome to vproof' },
+  { id: 2, icon: <Wallet size={24} />, label: 'Wallet', title: 'Set Up Your Wallet' },
+  { id: 3, icon: <FileLock size={24} />, label: 'Documents', title: 'Your Verification Roadmap' },
+  { id: 4, icon: <Shield size={24} />, label: 'Done', title: 'You\'re Protected' },
 ];
 
 function StepWelcome({ onNext }: { onNext: () => void }) {
   const { displayName, userType } = useAuthStore();
 
-  const highlights = [
-    { icon: '◈', label: 'vScore™ calculated from your documents' },
-    { icon: '⬡', label: 'Every transfer shows recipient trust score' },
-    { icon: '▣', label: 'Risk alerts protect your money automatically' },
-    { icon: '◎', label: 'Unverified recipients prompted before payment' },
+  const highlights: { icon: ReactNode, label: string }[] = [
+    { icon: <Percent size={24} />, label: 'vScore™ calculated from your documents' },
+    { icon: <CheckCircle size={24} />, label: 'Every transfer shows recipient trust score' },
+    { icon: <AlertTriangle size={24} />, label: 'Risk alerts protect your money automatically' },
+    { icon: <Shield size={24} />, label: 'Unverified recipients prompted before payment' },
   ];
 
   return (
     <div className="flex flex-col items-center text-center gap-8">
       <div className="relative">
         <div className="w-24 h-24 rounded-2xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center text-4xl">
-          ◈
+          <Shield />
         </div>
         <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-emerald-500 border-2 border-[#06060e]" />
       </div>
