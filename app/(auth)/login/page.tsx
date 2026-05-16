@@ -84,9 +84,7 @@ export default function LoginPage() {
     try {
       const responseData: any = await ApiService.auth.login({ email, password, userType });
       const data = responseData.data;
-      console.log('Login Response Data:', data);
       const resolvedUserType = data.userType || data.user?.role || userType;
-      console.log('Resolved UserType:', resolvedUserType);
 
       setToken(data.token);
 
@@ -96,7 +94,7 @@ export default function LoginPage() {
         displayName: data.user?.businessName || data.user?.fullName || data.user?.name || 'User',
       });
 
-      if (resolvedUserType === 'individual' && !data.user?.bankAccount) {
+      if (resolvedUserType === 'individual' && !data.user?.bankCode) {
         router.push('/onboarding');
       } else {
         router.push('/dashboard');
