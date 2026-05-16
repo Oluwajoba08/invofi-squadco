@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
-import { toast } from 'sonner';
+import { Building, User } from 'lucide-react';
 
 type Role = 'Individual' | 'Institution'; // | 'Vendor';
 
@@ -386,10 +386,10 @@ function InstitutionForm() {
   );
 }
 
-const ROLE_META: Record<Role, { icon: string; desc: string }> = {
-  Individual: { icon: '◎', desc: 'Protect your personal transfers with a verified identity.' },
+const ROLE_META: Record<Role, { icon: ReactNode; desc: string }> = {
+  Individual: { icon: <User size={24} />, desc: 'Protect your personal transfers with a verified identity.' },
   // Vendor: { icon: '◈', desc: 'Build trust with institutions by verifying your business.' },
-  Institution: { icon: '⬡', desc: 'Screen vendors and reduce fraud across your payments.' },
+  Institution: { icon: <Building size={24} />, desc: 'Screen vendors and reduce fraud across your payments.' },
 };
 
 export default function SignupPage() {

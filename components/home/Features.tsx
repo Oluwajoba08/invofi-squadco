@@ -1,32 +1,33 @@
 "use client";
 import { motion, useInView } from "motion/react";
-import { useRef } from "react";
+import { ReactNode, useRef } from "react";
 import GlowOrb from "./ui/GlowOrb";
+import { Check, FileIcon, Percent, Shield } from "lucide-react";
 
 interface Feature {
-  icon: string;
+  icon: ReactNode;
   title: string;
   desc: string;
 }
 
 const FEATURES: Feature[] = [
   {
-    icon: "⬡",
+    icon: <FileIcon size={24} />,
     title: "Document Intelligence",
     desc: "Upload your CAC, NIN, BVN, utility bills. Our AI cross-references and scores in real-time.",
   },
   {
-    icon: "◈",
+    icon: <Percent size={24} />,
     title: "Live vScore™",
     desc: "Every transfer shows the recipient's trust score. Send money knowing exactly who's receiving it.",
   },
   {
-    icon: "▣",
+    icon: <Shield size={24} />,
     title: "Risk Shield",
     desc: "Scores below 50 trigger an intelligent risk warning — protecting businesses and individuals from common fraud patterns.",
   },
   {
-    icon: "◎",
+    icon: <Check size={24} />,
     title: "Zero-Party Verification",
     desc: "Recipients who aren't on vproof get a secure link to verify instantly before funds release.",
   },
