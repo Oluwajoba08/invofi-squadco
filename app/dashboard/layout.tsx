@@ -28,7 +28,7 @@ export default function Layout({
       case "institution": return institution;
       case "vendor": return vendor;
       case "admin": return admin;
-      default: return <div>Unauthorized</div>;
+      default: return null;
     }
   };
 
