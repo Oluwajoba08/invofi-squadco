@@ -23,6 +23,7 @@ import { ApiService } from '@/services/api';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { FaceCapture } from '@/components/verification/FaceCapture';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type WorkflowStep = 'landing' | 'join' | 'document' | 'biometric' | 'processing' | 'score_reveal' | 'success';
 
@@ -402,17 +403,16 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest px-1">Settlement Bank</label>
-                    <select
-                      required
-                      value={extraDetails.bankCode}
-                      onChange={(e) => setExtraDetails({ ...extraDetails, bankCode: e.target.value })}
-                      className="w-full bg-[#0a0a0f]border border-white/10 rounded-xl h-12 px-4 text-white text-sm outline-none focus:border-violet-500/50 appearance-none"
-                    >
-                      <option value="">Select Bank</option>
-                      {banks.map((bank, i) => (
-                        <option key={i} value={bank.code}>{bank.name}</option>
-                      ))}
-                    </select>
+                    <Select value={extraDetails.bankCode} onValueChange={(v) => setExtraDetails((p) => ({ ...p, bankCode: v }))}>
+                      <SelectTrigger className="w-full bg-[#0a0a0f] border border-white/10 rounded-xl h-12 px-4 text-white text-sm outline-none focus:border-violet-500/50 appearance-none">
+                        <SelectValue placeholder="Select bank" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-zinc-900 border-zinc-800 text-white">
+                        {banks.map((bank, i) => (
+                          <SelectItem key={bank.code} value={bank.code}>{bank.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-white/20 uppercase tracking-widest px-1">Account Number</label>
