@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Building, User } from 'lucide-react';
+import { toast } from 'sonner';
 
 type Role = 'Individual' | 'Institution'; // | 'Vendor';
 
@@ -122,8 +123,8 @@ function IndividualForm() {
         // dateOfBirth: formData.dateOfBirth,
       }) as any;
 
-      setToken(token);
-      router.push('/onboarding');
+      toast.success('Registration successful! Please sign in.');
+      router.push('/login');
     } catch (err: any) {
       setError(err?.message ?? 'Registration failed. Please check your details and try again.');
     } finally {
@@ -444,7 +445,7 @@ export default function SignupPage() {
         </div>
 
         {/* ── Right panel (form) ── */}
-        <div className="flex-1 flex flex-col items-center justify-start overflow-y-auto py-12 px-6">
+        <div className="flex-1 flex flex-col items-center justify-center overflow-y-auto py-12 px-6">
 
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-2 mb-8 self-start">

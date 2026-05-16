@@ -58,6 +58,7 @@ export default function IndividualDashboard() {
   const stats = dashboardData?.stats;
   const sessions = dashboardData?.recentSessions || [];
   const verifications = dashboardData?.recentVerifications || [];
+  const wallet = dashboardData?.wallet ? { ...dashboardData.wallet, balance: stats?.walletBalance || 0 } as any : transferWallet;
 
   return (
     <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8 w-full overflow-x-hidden">
@@ -112,7 +113,7 @@ export default function IndividualDashboard() {
       <FundWalletModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        wallet={transferWallet}
+        wallet={wallet}
         onSuccess={fetchDashboardData}
       />
 
@@ -134,7 +135,7 @@ export default function IndividualDashboard() {
         onClose={() => setIsVerifyTransferOpen(false)}
       />
 
-      {profile?.verificationStatus === 'review' && (
+      {vScore && vScore < 70 && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -145,7 +146,7 @@ export default function IndividualDashboard() {
         </motion.div>
       )}
 
-      {!profile?.trustScore && !vScore && (
+      {vScore && vScore < 70 && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -159,27 +160,31 @@ export default function IndividualDashboard() {
       <div className="grid grid-cols-1 gap-4">
         <Button
           variant="outline"
+          disabled={(profile?.trustScore || vScore || 0) >= 70}
           onClick={() => setIsVerifyModalOpen(true)}
-          className="w-full h-16 bg-white/2 hover:bg-white/5 border-white/10 rounded-2xl text-white font-bold text-lg group transition-all duration-300 flex items-center justify-center gap-3"
+          className={cn(
+            "w-full h-16 bg-white/2 hover:bg-white/5 border-white/10 rounded-2xl text-white font-bold text-lg group transition-all duration-300 flex items-center justify-center gap-3",
+            (profile?.trustScore || vScore || 0) >= 70 && "opacity-50 grayscale cursor-not-allowed"
+          )}
         >
           <Shield className="h-6 w-6 text-violet-400 group-hover:scale-110 transition-transform" />
-          Verify my identity
+          {(profile?.trustScore || vScore || 0) >= 70 ? 'Identity Verified' : 'Verify my identity'}
         </Button>
 
         <div className="space-y-3">
-          {(profile?.trustScore || vScore || 0) < 75 && (
+          {(profile?.trustScore || vScore || 0) < 70 && (
             <div className="flex items-center gap-3 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-200/80 text-xs">
               <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />
-              <p>Session creation restricted. Your TrustScore™ must be at least 75 to initiate payments.</p>
+              <p>Session creation restricted. Your TrustScore™ must be at least 70 to initiate payments.</p>
             </div>
           )}
           <Button
             variant="outline"
-            disabled={(profile?.trustScore || vScore || 0) < 75}
+            disabled={(profile?.trustScore || vScore || 0) < 70}
             onClick={() => setIsCreateSessionOpen(true)}
             className={cn(
               "w-full h-16 bg-white/2 hover:bg-white/5 border-white/10 rounded-2xl text-white font-bold text-lg group transition-all duration-300 flex items-center justify-center gap-3",
-              (profile?.trustScore || vScore || 0) < 75 && "opacity-50 grayscale cursor-not-allowed"
+              (profile?.trustScore || vScore || 0) < 70 && "opacity-50 grayscale cursor-not-allowed"
             )}
           >
             <ArrowLeftRight className="h-6 w-6 text-emerald-400 group-hover:scale-110 transition-transform" />

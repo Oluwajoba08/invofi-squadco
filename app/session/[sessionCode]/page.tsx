@@ -73,8 +73,10 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
             setStep('document');
           }
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error fetching session:', error);
+        console.log('Error status:', error?.response?.status);
+        console.log('Error data:', error?.response?.data);
         toast.error('Invalid or expired payment session');
       } finally {
         setLoading(false);
@@ -86,16 +88,17 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
   const pollStatus = useCallback(async () => {
     if (!guestToken && !session) return;
     try {
-      const response = await ApiService.sessions.getStatus(sessionCode);
+      const response = await ApiService.sessions.getStatus(sessionCode, {
+        guestToken: guestToken || undefined
+      });
       if (response.success) {
         setSessionStatus(response.data);
-        
-        // Handle auto-transitions based on status
-        if (response.data.status === 'awaiting_both_consent' || 
-            response.data.status === 'awaiting_initiator_consent' || 
-            response.data.status === 'awaiting_recipient_consent') {
+
+        if (response.data.status === 'awaiting_both_consent' ||
+          response.data.status === 'awaiting_initiator_consent' ||
+          response.data.status === 'awaiting_recipient_consent') {
           if (step === 'processing' || step === 'success') {
-             setStep('score_reveal');
+            setStep('score_reveal');
           }
         } else if (response.data.status === 'payment_released') {
           setStep('success');
@@ -662,7 +665,7 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
                   <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Transaction Receipt</p>
                   <Badge variant="outline" className="text-[9px] border-emerald-500/20 text-emerald-400 uppercase tracking-widest">Success</Badge>
                 </div>
-                
+
                 <div className="space-y-4">
                   <div className="flex justify-between items-end border-b border-white/5 pb-4">
                     <div>
@@ -674,7 +677,7 @@ export default function SessionPublicPage({ params }: { params: Promise<{ sessio
                       <p className="text-xs font-mono text-white/60">{sessionStatus?.squadTransactionRef || 'N/A'}</p>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-[9px] text-white/20 uppercase font-bold mb-1">From</p>

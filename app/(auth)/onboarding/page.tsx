@@ -129,13 +129,13 @@ function StepWallet({ onNext }: { onNext: () => void }) {
     setFormData((p) => ({ ...p, [key]: e.target.value }));
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault(); 
+    e.preventDefault();
     setError('');
     if (!formData.gender) { setError('Please select your gender.'); return; }
     if (formData.bvn.length !== 11) { setError('BVN must be 11 digits.'); return; }
-    if (!formData.bank){ setError('Please select a bank.'); return; }
-    if (!formData.accountNumber){ setError('Please input bank account number.'); return; }
-    if (!formData.address){ setError('Please input address.'); return; }
+    if (!formData.bank) { setError('Please select a bank.'); return; }
+    if (!formData.accountNumber) { setError('Please input bank account number.'); return; }
+    if (!formData.address) { setError('Please input address.'); return; }
     if (formData.nin.length !== 11) { setError('NIN must be 11 digits.'); return; }
     if (!formData.dateOfBirth) { setError('Please enter your date of birth.'); return; }
     if (!formData.phoneNumber) { setError('Please enter your phone number.'); return; }
@@ -151,7 +151,7 @@ function StepWallet({ onNext }: { onNext: () => void }) {
         accountNumber: formData.accountNumber,
         bankCode: formData.bank,
         dateOfBirth: formatToDDMMYYYY(formData.dateOfBirth),
-        nin: formData.nin,
+        ninNumber: formData.nin,
         phoneNumber: formData.phoneNumber,
       });
       onNext();
@@ -166,7 +166,13 @@ function StepWallet({ onNext }: { onNext: () => void }) {
     async function fetchBanks() {
       try {
         const data = await ApiService.wallet.getBanks();
-        setBanks(data.data);
+        if (data.data) {
+          // Filter out duplicate bank codes to avoid Select key issues
+          const uniqueBanks = data.data.filter((bank: any, index: number, self: any[]) =>
+            index === self.findIndex((b) => b.code === bank.code)
+          );
+          setBanks(uniqueBanks);
+        }
       } catch (error) {
         console.error('Error fetching banks:', error);
       }
@@ -200,13 +206,13 @@ function StepWallet({ onNext }: { onNext: () => void }) {
               <SelectValue placeholder="Select bank" />
             </SelectTrigger>
             <SelectContent className="bg-zinc-900 border-zinc-800 text-white">
-              {banks.map((bank, i) => (
+              {banks.map((bank) => (
                 <SelectItem key={bank.code} value={bank.code}>{bank.name}</SelectItem>
               ))}
             </SelectContent>
           </Select>
         </Field>
-        
+
         <Field label="Bank Account Number" id="w-acct" hint="The account linked to your BVN">
           <Input
             id="w-acct" type="text" inputMode="numeric" maxLength={10} placeholder="0123456789" required
@@ -216,13 +222,21 @@ function StepWallet({ onNext }: { onNext: () => void }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 md:gap-3">
+        <Field label="Phone Number" id="w-phone" hint="Mobile number linked to your BVN">
+          <Input
+            id="w-phone" type="tel" placeholder="+2348012345678" required
+            value={formData.phoneNumber} onChange={set('phoneNumber')}
+          />
+        </Field>
+
         <Field label="BVN" id="w-bvn" hint="11-digit Bank Verification Number">
           <Input
             id="w-bvn" type="text" inputMode="numeric" maxLength={11} placeholder="12345678901" required
             value={formData.bvn} onChange={set('bvn')}
           />
         </Field>
-
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-3">
         <Field label="Gender" id="w-gender">
           <Select onValueChange={(v) => setFormData((p) => ({ ...p, gender: v as 'male' | 'female' }))}>
             <SelectTrigger className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 transition-colors duration-200">
@@ -251,12 +265,12 @@ function StepWallet({ onNext }: { onNext: () => void }) {
         </Field>
       </div>
 
-      <Field label="Phone Number" id="w-phoneNumber">
+      {/* <Field label="Phone Number" id="w-phoneNumber">
         <Input
           id="w-phoneNumber" type="text" placeholder="07000000000" required
           value={formData.phoneNumber} onChange={set('phoneNumber')}
         />
-      </Field>
+      </Field> */}
 
       <Field label="Residential Address" id="w-address">
         <Input

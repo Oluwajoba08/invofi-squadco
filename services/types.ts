@@ -63,7 +63,7 @@ export namespace AuthRequest {
     accountNumber: string;
     bankCode: string;
     dateOfBirth: string;
-    nin: string;
+    ninNumber: string;
     phoneNumber: string;
   }
 
