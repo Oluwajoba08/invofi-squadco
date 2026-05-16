@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
     const message = data?.message || error.message || 'An unexpected error occurred';
 
     if (error.response?.status === 401) {
-      console.error('Unauthorized access - logging out');
+      console.error(`Unauthorized access at ${error.config?.url} - logging out`);
       useAuthStore.getState().logout();
       if (typeof window !== 'undefined') {
         window.location.href = '/login';
