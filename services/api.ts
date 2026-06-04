@@ -2,6 +2,7 @@ import { apiClient } from '@/utils/apiClient';
 import {
   AuthRequest,
   AuthResponse,
+  UserType,
   Vendor,
   Individual,
   Institution,
@@ -21,6 +22,12 @@ export const ApiService = {
 
     login: (data: AuthRequest.Login) =>
       apiClient<AuthResponse>('/auth/login', { data }),
+
+    forgotPassword: (data: { email: string; userType: UserType }) =>
+      apiClient<{ success: boolean; data: { message: string } }>('/auth/forgot-password', { data }),
+
+    resetPassword: (data: { token: string; userType: UserType; password: string }) =>
+      apiClient<{ success: boolean; data: { message: string } }>('/auth/reset-password', { data }),
   },
 
   // --- VENDORS ---
