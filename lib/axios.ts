@@ -32,13 +32,21 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     const data = error.response?.data as any;
-    const message = data?.message || error.message || 'An unexpected error occurred';
+    const message = data?.error || data?.message || error.message || 'An unexpected error occurred';
 
     if (error.response?.status === 401) {
-      console.error(`Unauthorized access at ${error.config?.url} - logging out`);
-      useAuthStore.getState().logout();
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login';
+      const isAuthRoute = error.config?.url ? (
+        error.config.url.includes('/auth/') || 
+        error.config.url.includes('/guest/') || 
+        error.config.url.includes('guest')
+      ) : false;
+
+      if (!isAuthRoute) {
+        console.error(`Unauthorized access at ${error.config?.url} - logging out`);
+        useAuthStore.getState().logout();
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
       }
     }
 

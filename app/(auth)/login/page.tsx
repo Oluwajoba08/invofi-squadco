@@ -8,6 +8,7 @@ import { ApiService } from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 import { UserType } from '@/services/types';
 import { Building, UserCircle } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const inputCls =
   'w-full bg-zinc-900/80 border border-zinc-800 rounded-xl px-4 py-3.5 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 transition-colors duration-200';
@@ -31,6 +32,7 @@ const USER_TYPES: { value: UserType; label: string; icon: ReactNode; hint: strin
 ];
 
 function ScoreRingDeco() {
+  const { t } = useTranslation();
   return (
     <div className="relative w-55 h-55 mx-auto">
       {/* Outer glow */}
@@ -59,7 +61,7 @@ function ScoreRingDeco() {
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="text-5xl font-bold text-white" style={{ fontFamily: 'Syne, sans-serif' }}>78</span>
-        <span className="text-xs text-white/30 uppercase tracking-widest mt-1">vScore™</span>
+        <span className="text-xs text-white/30 uppercase tracking-widest mt-1">{t('vScore™')}</span>
       </div>
     </div>
   );
@@ -68,6 +70,7 @@ function ScoreRingDeco() {
 export default function LoginPage() {
   const router = useRouter();
   const { setToken, setUser } = useAuthStore();
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -127,7 +130,7 @@ export default function LoginPage() {
             <div className="h-8 w-8 rounded-lg bg-violet-600 flex items-center justify-center">
               <span className="text-white font-bold text-sm">V</span>
             </div>
-            <span className="text-white font-bold text-xl" style={{ fontFamily: 'Syne, sans-serif' }}>vproof</span>
+            <span className="text-white font-bold text-xl" style={{ fontFamily: 'Syne, sans-serif' }}>{t('vproof')}</span>
           </div>
 
           {/* Score ring demo */}
@@ -135,12 +138,12 @@ export default function LoginPage() {
             <ScoreRingDeco />
             <div className="text-center">
               <p className="text-white font-semibold text-lg mb-1" style={{ fontFamily: 'Syne, sans-serif' }}>
-                Adaeze Nwosu-Okonkwo
+                {t('Adaeze Nwosu-Okonkwo')}
               </p>
-              <p className="text-white/30 text-xs font-mono">Individual · Verified</p>
+              <p className="text-white/30 text-xs font-mono">{t('Individual · Verified')}</p>
               <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-emerald-400 text-xs font-medium">Identity Verified</span>
+                <span className="text-emerald-400 text-xs font-medium">{t('Identity Verified')}</span>
               </div>
             </div>
 
@@ -160,7 +163,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <p className="relative z-10 text-white/20 text-xs">© 2025 vproof Technologies Ltd.</p>
+          <p className="relative z-10 text-white/20 text-xs">{t('© 2025 vproof Technologies Ltd.')}</p>
         </div>
 
         {/* ── Right form panel ── */}
@@ -171,7 +174,7 @@ export default function LoginPage() {
             <div className="h-7 w-7 rounded-lg bg-violet-600 flex items-center justify-center">
               <span className="text-white font-bold text-xs">V</span>
             </div>
-            <span className="text-white font-bold text-lg" style={{ fontFamily: 'Syne, sans-serif' }}>vproof</span>
+            <span className="text-white font-bold text-lg" style={{ fontFamily: 'Syne, sans-serif' }}>{t('vproof')}</span>
           </div>
 
           <motion.div
@@ -181,18 +184,18 @@ export default function LoginPage() {
             className="w-full max-w-md"
           >
             <h1 className="text-3xl font-bold text-white mb-1" style={{ fontFamily: 'Syne, sans-serif' }}>
-              Welcome back
+              {t('Welcome back')}
             </h1>
             <p className="text-white/40 text-sm mb-10">
-              Don&apos;t have an account?{' '}
+              {t("Don't have an account?")}{' '}
               <Link href="/signup" className="text-violet-400 hover:text-violet-300 transition-colors">
-                Get verified free →
+                {t('Get verified free →')}
               </Link>
             </p>
 
             {/* User type selector */}
             <div className="mb-7">
-              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wide mb-3">Sign in as</p>
+              <p className="text-xs font-medium text-zinc-500 uppercase tracking-wide mb-3">{t('Sign in as')}</p>
               <div className="grid grid-cols-2 gap-2">
                 {USER_TYPES.map((ut) => (
                   <button
@@ -224,7 +227,7 @@ export default function LoginPage() {
 
               <div className="flex flex-col gap-1.5">
                 <label htmlFor="email" className="text-xs font-medium text-zinc-400 uppercase tracking-wide">
-                  Email Address
+                  {t('Email Address')}
                 </label>
                 <input
                   id="email"
@@ -241,14 +244,14 @@ export default function LoginPage() {
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center justify-between">
                   <label htmlFor="password" className="text-xs font-medium text-zinc-400 uppercase tracking-wide">
-                    Password
+                    {t('Password')}
                   </label>
-                  <button
-                    type="button"
+                  <Link
+                    href="/forgot-password"
                     className="text-[11px] text-violet-400 hover:text-violet-300 transition-colors"
                   >
-                    Forgot password?
-                  </button>
+                    {t('Forgot password?')}
+                  </Link>
                 </div>
                 <div className="relative">
                   <input
@@ -283,10 +286,10 @@ export default function LoginPage() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                     </svg>
-                    Signing in…
+                    {t('Signing in…')}
                   </span>
                 ) : (
-                  `Sign in as ${USER_TYPES.find((u) => u.value === userType)?.label} →`
+                  userType === 'individual' ? t('Sign in as Individual →') : t('Sign in as Institution →')
                 )}
               </button>
             </form>
@@ -294,7 +297,7 @@ export default function LoginPage() {
             {/* Divider */}
             <div className="flex items-center gap-4 my-7">
               <div className="flex-1 h-px bg-white/8" />
-              <span className="text-white/20 text-xs">or continue with</span>
+              <span className="text-white/20 text-xs">{t('or continue with')}</span>
               <div className="flex-1 h-px bg-white/8" />
             </div>
 
@@ -316,10 +319,10 @@ export default function LoginPage() {
             </div>
 
             <p className="text-center text-white/20 text-xs mt-8">
-              By signing in you agree to our{' '}
-              <a href="#" className="underline hover:text-white/40">Terms</a>{' '}
-              and{' '}
-              <a href="#" className="underline hover:text-white/40">Privacy Policy</a>.
+              {t('By signing in you agree to our')}{' '}
+              <a href="#" className="underline hover:text-white/40">{t('Terms')}</a>{' '}
+              {t('and')}{' '}
+              <a href="#" className="underline hover:text-white/40">{t('Privacy Policy')}</a>.
             </p>
           </motion.div>
         </div>
